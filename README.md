@@ -4,7 +4,8 @@ A student's project.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+The interesting files are located in the [lib](/lib/) folder.  
+
 
 A few resources to get you started if this is your first Flutter project:
 
