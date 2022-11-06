@@ -1,6 +1,6 @@
 # island_project
 
-A new Flutter project.
+A student's project.
 
 ## Getting Started
 
