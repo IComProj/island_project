@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "783011831397",
+    "firebase_url": "https://project-island-363512-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "project-island-363512",
+    "storage_bucket": "project-island-363512.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:783011831397:android:5b624d8deb9d7afe59308c",
+        "android_client_info": {
+          "package_name": "com.islandcommunityproject.island_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "783011831397-481p84n6srm2e91ob5k6ces8a8qo7la1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHZt7P4aQRqh9_7wDnoDA3N2qHUPrCeSk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "783011831397-481p84n6srm2e91ob5k6ces8a8qo7la1.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "783011831397-82mhturgsr5b9sd10pcem0ssn424up4s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.islandcommunityproject.islandProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
