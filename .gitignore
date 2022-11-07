@@ -31,8 +31,13 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+
+
 #!/build/web/
 /lib/firebase_options.dart
+/macos/firebase_app_id_file.json
+/macos/Runner/GoogleService-Info.plist
+
 
 
 # Symbolication related
