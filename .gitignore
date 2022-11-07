@@ -33,7 +33,7 @@ migrate_working_dir/
 /build/
 #!/build/web/
 /lib/firebase_options.dart
-/macos/*
+
 
 # Symbolication related
 app.*.symbols
