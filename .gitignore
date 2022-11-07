@@ -33,8 +33,7 @@ migrate_working_dir/
 /build/
 #!/build/web/
 /lib/firebase_options.dart
-/macos/firebase_app_id_file.json
-/macos/Runner/GoogleService-Info.plist
+/macos/*
 
 # Symbolication related
 app.*.symbols
