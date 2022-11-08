@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:island_project/data/thing.dart';
+import 'package:island_project/utilities/firebase_utilities.dart';
 import 'package:unicons/unicons.dart';
 
 class JobAction {
@@ -60,8 +61,9 @@ class Hunter extends Job {
 
   @override
   List<JobAction> getActions() {
-    var huntAction =
-        JobAction("Jagen", onActivate: () {}, iconData: Ionicons.locate);
+    var huntAction = JobAction("Jagen", onActivate: () {
+      FirebaseUtilities.instance.setLastActivation();
+    }, iconData: Ionicons.locate, requirements: {});
 
     List<JobAction> result = List.from([huntAction]);
 

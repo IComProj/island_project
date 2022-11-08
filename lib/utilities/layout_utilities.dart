@@ -42,7 +42,7 @@ class StyleCollection {
     if (states.contains(MaterialState.pressed)) {
       return ColorPalette.onSecondary;
     }
-    return ColorPalette.onSecondary;
+    return const Color.fromARGB(255, 135, 135, 135);
   }), shape: MaterialStateProperty.resolveWith((states) {
     if (states.contains(MaterialState.pressed)) {
       return RoundedRectangleBorder(
@@ -52,8 +52,11 @@ class StyleCollection {
 
     return RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
-        side: const BorderSide(color: ColorPalette.onSecondary));
+        side: const BorderSide(color: Color.fromARGB(255, 150, 150, 150)));
   }));
+
+  static TextStyle disabledTextStyle =
+      const TextStyle(color: Color.fromARGB(255, 135, 135, 135));
 
   ///A style for each header that's on non-black background
   static TextStyle header01TextStyle = GoogleFonts.oswald(
@@ -237,7 +240,7 @@ Widget buildResourceCard(Things things) {
   Widget resourcesList = Column(
       children: things.content.entries.map((e) {
     return Row(children: [
-      _getIconForResource(e.key),
+      getIconForResource(e.key),
       Text("${e.key}:"),
       const Spacer(),
       Text("${e.value}")
@@ -263,7 +266,7 @@ Widget buildResourceCard(Things things) {
       ));
 }
 
-Icon _getIconForResource(String resourceName) {
+Icon getIconForResource(String resourceName) {
   switch (resourceName) {
     case ResourceName.gold:
       return const Icon(

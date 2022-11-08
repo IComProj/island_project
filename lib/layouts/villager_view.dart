@@ -41,9 +41,31 @@ class _VillagerViewState extends State<VillagerView> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime? lastActivation =
+        DateTime.tryParse(widget.userData.lastActivation);
+
+    lastActivation ?? DateTime(1313);
+
     return buildScaffold("Dorfbewohner: ${widget.userData.name}",
-        body: ListView(
-            children: [buildResourceCard(ownedThings ?? Things.empty())]));
+        body: ListView(children: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Card(
+              elevation: 10,
+              child: Column(
+                children: [
+                  Text(
+                    "Infos:",
+                    style: StyleCollection.defaultTextStyle,
+                  ),
+                  Text(
+                      "Letzte Aktivität: ${lastActivation?.day}.${lastActivation?.month}.${lastActivation?.year}")
+                ],
+              ),
+            ),
+          ),
+          buildResourceCard(ownedThings ?? Things.empty())
+        ]));
   }
 
   @override

@@ -2,14 +2,11 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:island_project/data/thing.dart';
 import 'package:island_project/data/userdata.dart';
 
 class FirebaseUtilities {
   static FirebaseUtilities instance = FirebaseUtilities();
-
-  // UserData? _currentUser;
-
-  // UserData? get currentUser => _currentUser;
 
   ///Signs the user in.
   ///
@@ -59,6 +56,14 @@ class FirebaseUtilities {
     return ref.child("users").child(username);
   }
 
+  Future<void> setLastActivation() async {
+    UserData userData = await getCurrentUserData();
+
+    userData.lastActivation = DateTime.now().toIso8601String();
+
+    updateUserData(userData);
+  }
+
   ///Uploads the data of a user to firebase.
   ///
   void updateUserData(UserData userData) {
@@ -73,6 +78,21 @@ class FirebaseUtilities {
         .child("users")
         .child(userData.uid)
         .update(userData.serialize())
+        .onError((error, stackTrace) => print(error));
+  }
+
+  void updateThings(Things things) {
+    if (things.isEmpty) {
+      print("Things are empty!");
+      return;
+    }
+
+    var ref = FirebaseDatabase.instance.ref();
+
+    ref
+        .child("things")
+        .child(things.owner)
+        .update(things.serialize())
         .onError((error, stackTrace) => print(error));
   }
 }

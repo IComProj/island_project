@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:island_project/data/notification.dart' as notification;
 import 'package:island_project/data/thing.dart';
+import 'package:island_project/data/userdata.dart';
 import 'package:island_project/layouts/primitive_layouts.dart';
 import 'package:island_project/layouts/sign_in_page.dart';
 import 'package:island_project/utilities/firebase_utilities.dart';
@@ -18,14 +19,16 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  bool isSchedulingJob = false;
+
   @override
   Widget build(BuildContext context) {
-    var currentUser = FirebaseUtilities.instance.getCurrentUserData();
+    var currentUserLoader = FirebaseUtilities.instance.getCurrentUserData();
 
     return FutureBuilder(
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data!.job.isEmpty) {
+      builder: (context, userSnapshot) {
+        if (userSnapshot.hasData) {
+          if (userSnapshot.data!.job.isEmpty) {
             return buildScaffold("Zuhause",
                 body: Column(
                   children: [
@@ -47,7 +50,7 @@ class _HomeViewState extends State<HomeView> {
                     TextButton(
                         style: StyleCollection.defaultButtonStyle,
                         onPressed: () {
-                          var userData = snapshot.data!;
+                          var userData = userSnapshot.data!;
 
                           userData.job = jobs.all[_dropdownValue ?? 0].name;
 
@@ -62,18 +65,19 @@ class _HomeViewState extends State<HomeView> {
                   ],
                 ));
           } else {
-            var job = jobs.getJobByName(snapshot.data!.job);
+            var job = jobs.getJobByName(userSnapshot.data!.job);
+            UserData currentUser = userSnapshot.data!;
+
+            if (job == null) return const ErrorPage();
 
             var thingsLoader = FirebaseDatabase.instance
-                .ref("things/${snapshot.data!.uid}")
+                .ref("things/${userSnapshot.data!.uid}")
                 .once()
                 .then((e) {
               if (!e.snapshot.exists) return null;
 
               return Things.fromSnapshot(e.snapshot);
             });
-
-            if (job == null) return const ErrorPage();
 
             return FutureBuilder(
               builder: (context, things) {
@@ -86,15 +90,15 @@ class _HomeViewState extends State<HomeView> {
                     Text("Dein zurzeitiger Beruf:  ",
                         style: StyleCollection.defaultTextStyle),
                     Text(job.name,
-                        style: GoogleFonts.sedgwickAveDisplay(
+                        style: GoogleFonts.oswald(
                             color: Colors.red[400], fontSize: 38))
                   ]),
                   buildJobDescription(job),
                   Text("Aktionen:", style: StyleCollection.header02TextStyle),
                 ]);
 
-                menu.addAll(
-                    buildActionsMenu(job, things.data ?? Things.empty()));
+                menu.addAll(buildActionsMenu(
+                    job, things.data ?? Things.empty(), currentUser));
 
                 return buildScaffold("Zuhause",
                     body: ListView(
@@ -108,7 +112,7 @@ class _HomeViewState extends State<HomeView> {
 
         return const LoadingPage();
       },
-      future: currentUser,
+      future: currentUserLoader,
     );
   }
 
@@ -164,36 +168,71 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  List<Widget> buildActionsMenu(jobs.Job job, Things things) {
+  List<Widget> buildActionsMenu(
+      jobs.Job job, Things things, UserData currentUser) {
     return job.getActions().map((a) {
-      bool isActivateable = a.isActivateable(things);
+      DateTime lastActivation = DateTime.parse(currentUser.lastActivation);
+      bool isActivateable = a.isActivateable(things) &&
+          !isSchedulingJob &&
+          lastActivation.difference(DateTime.now()).inDays <= -1;
 
-      //print(isActivateable);
+      print(lastActivation.difference(DateTime.now()).inDays);
+
+      TextStyle resourceNotAvailiableTextStyle =
+          const TextStyle(color: Colors.red);
+
+      List<Widget> requiredResourcesLabels =
+          a.requirements?.entries.map((entry) {
+                bool hasResource = things.hasResources(entry.key, entry.value);
+
+                return Row(children: [
+                  getIconForResource(entry.key),
+                  Text(
+                    "${entry.key}:",
+                    style: hasResource ? null : resourceNotAvailiableTextStyle,
+                  ),
+                  Text(
+                    "${entry.value}  ",
+                    style: hasResource ? null : resourceNotAvailiableTextStyle,
+                  ),
+                ]);
+              }).toList() ??
+              List.empty();
 
       return Card(
           child: Padding(
         padding: const EdgeInsets.all(8),
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Text(
-            a.actionName,
-            style: GoogleFonts.sedgwickAveDisplay(
-                color: Colors.red[400], fontSize: 35),
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                a.actionName,
+                style: GoogleFonts.oswald(color: Colors.red[400], fontSize: 35),
+              ),
+              TextButton(
+                onPressed: isActivateable
+                    ? () {
+                        setState(() {
+                          isSchedulingJob = true;
+                        });
+
+                        a.activate();
+                      }
+                    : null,
+                style: isActivateable
+                    ? StyleCollection.defaultButtonStyle
+                    : StyleCollection.disabledButtonStyle,
+                child: Text(
+                  "Ausführen",
+                  style:
+                      isActivateable ? null : StyleCollection.disabledTextStyle,
+                ),
+              )
+            ],
           ),
-          TextButton(
-            onPressed: isActivateable
-                ? () {
-                    //TODO: Implement job action.
-
-                    //print("Pressed!!!");
-
-                    a.activate();
-                  }
-                : null,
-            style: isActivateable
-                ? StyleCollection.defaultButtonStyle
-                : StyleCollection.disabledButtonStyle,
-            child: const Text("Ausführen"),
+          Row(
+            children: requiredResourcesLabels,
           )
         ]),
       ));

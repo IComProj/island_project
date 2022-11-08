@@ -39,12 +39,22 @@ class Things {
   static Things empty() {
     return Things("", Map.identity());
   }
+
+  bool hasResources(String resourceName, int resourceCount) {
+    if (!content.containsKey(resourceName)) return false;
+
+    int ownedResourceCount = content[resourceName] ?? 0;
+
+    if (ownedResourceCount >= resourceCount) return true;
+
+    return false;
+  }
 }
 
 class ResourceName {
   static const String gold = "GOLD";
-  static const String wheat = "WHEAT";
-  static const String apple = "APPLES";
-  static const String shovel = "SHOVEL";
-  static const String meat = "MEAT";
+  static const String wheat = "GETREIDE";
+  static const String apple = "ÄPFEL";
+  static const String shovel = "SCHAUFEL";
+  static const String meat = "FLEISCH";
 }
