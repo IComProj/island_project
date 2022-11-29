@@ -65,7 +65,13 @@ class Hunter extends Job {
       FirebaseUtilities.instance.setLastActivation();
     }, iconData: Ionicons.locate, requirements: {});
 
-    List<JobAction> result = List.from([huntAction]);
+    var placeTrap = JobAction("Place Trap", onActivate: () {
+      FirebaseUtilities.instance.setLastActivation();
+    }, iconData: Ionicons.locate, requirements: {
+      ResourceName.shovel: 1,
+    });
+
+    List<JobAction> result = List.from([huntAction, placeTrap]);
 
     result.addAll(super.getActions());
 

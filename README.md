@@ -1,6 +1,6 @@
 # island_project
 
-A student's project.
+A student's project focusing community behaviour. 
 
 ## Getting Started
 

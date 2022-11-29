@@ -49,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
                     buildJobDropdown(),
                     buildJobDescription(jobs.all[_dropdownValue ?? 0]),
                     TextButton(
-                        style: StyleCollection.defaultButtonStyle,
+                        style: Theme.of(context).textButtonTheme.style,
                         onPressed: () {
                           var userData = userSnapshot.data!;
 
@@ -60,7 +60,7 @@ class _HomeViewState extends State<HomeView> {
                           setState(() {});
                         },
                         child: Text(
-                          style: StyleCollection.defaultTextStyle,
+                          style: Theme.of(context).textTheme.button,
                           "Job wählen",
                         ))
                   ],
@@ -91,13 +91,16 @@ class _HomeViewState extends State<HomeView> {
                       0)),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Text("Dein zurzeitiger Beruf:  ",
-                        style: StyleCollection.defaultTextStyle),
+                        style: Theme.of(context).textTheme.headline5),
                     Text(job.name,
-                        style: GoogleFonts.oswald(
-                            color: Colors.red[400], fontSize: 38))
+                        style: Theme.of(context).textTheme.displaySmall)
                   ]),
                   buildJobDescription(job),
-                  Text("Aktionen:", style: StyleCollection.header02TextStyle),
+                  Text(
+                    "Aktionen",
+                    style: Theme.of(context).textTheme.headline4,
+                    textAlign: TextAlign.center,
+                  ),
                   buildNotificationCard(notification.Notification(
                       "",
                       "Du kannst jeden Tag nur |eine Aktion| ausführen. Die Resourcenangaben unter den jeweiligen Aktionen geben den Preis an - was die Aktion dann macht, nusst du |selbst herausfinden|!",
@@ -144,7 +147,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     Text(
                       "   ${jobs.all[index].name}",
-                      style: StyleCollection.defaultTextStyle,
+                      style: Theme.of(context).textTheme.headline5,
                     )
                   ],
                 ));
@@ -179,10 +182,12 @@ class _HomeViewState extends State<HomeView> {
           !isSchedulingJob &&
           lastActivation.difference(DateTime.now()).inDays <= -1;
 
-      print(lastActivation.difference(DateTime.now()).inDays);
+      print(
+          "Last activation ${lastActivation.difference(DateTime.now()).inDays.abs()} ago.");
 
-      TextStyle resourceNotAvailiableTextStyle =
-          const TextStyle(color: Colors.red);
+      TextStyle? resourceNotAvailiableTextStyle = Theme.of(context)
+          .textTheme
+          .bodySmall; //const TextStyle(color: Colors.red);
 
       List<Widget> requiredResourcesLabels =
           a.requirements?.entries.map((entry) {
@@ -209,27 +214,29 @@ class _HomeViewState extends State<HomeView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                a.actionName,
-                style: GoogleFonts.oswald(color: Colors.red[400], fontSize: 35),
-              ),
+              Text(a.actionName,
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4 //GoogleFonts.oswald(color: Colors.red[400], fontSize: 35),
+                  ),
               TextButton(
                 onPressed: isActivateable
                     ? () {
                         setState(() {
                           isSchedulingJob = true;
                         });
-
                         a.activate();
                       }
                     : null,
-                style: isActivateable
-                    ? StyleCollection.defaultButtonStyle
-                    : StyleCollection.disabledButtonStyle,
+                style: Theme.of(context).textButtonTheme.style,
                 child: Text(
                   "Ausführen",
-                  style:
-                      isActivateable ? null : StyleCollection.disabledTextStyle,
+                  style: isActivateable
+                      ? null
+                      : Theme.of(context)
+                          .textTheme
+                          .button
+                          ?.apply(color: Theme.of(context).disabledColor),
                 ),
               )
             ],

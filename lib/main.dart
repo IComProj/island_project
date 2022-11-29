@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:island_project/data/color_palette.dart';
 
 import 'layouts/main_page.dart';
@@ -16,13 +17,39 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Color greenPrimary = Colors.lightGreen.shade400;
+
     return MaterialApp(
       title: 'Island Project',
-      theme: ThemeData(
-          primarySwatch: Colors.green,
-          primaryColor: Colors.green[600],
-          colorScheme: _generateColorSceme(),
-          backgroundColor: Colors.black),
+      theme: ThemeData.dark().copyWith(
+          disabledColor: Colors.grey.shade700,
+          textButtonTheme: TextButtonThemeData(style:
+              ButtonStyle(shape: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18),
+                  side: BorderSide(color: Colors.grey.shade700));
+            }
+
+            return RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+                side: BorderSide(color: greenPrimary));
+          }))),
+          textTheme: Typography.whiteCupertino.apply(
+            fontFamily: "Oswald",
+            displayColor: Colors.red.shade700,
+            bodyColor: greenPrimary,
+          ),
+          colorScheme: ColorScheme.dark(
+              background: Colors.black,
+              primary: greenPrimary,
+              secondary: greenPrimary))
+      // primarySwatch: Colors.green,
+      // primaryColor: Colors.green[600],
+      // colorScheme: _generateColorSceme(),
+      // backgroundColor: Colors.black
+
+      ,
       home: const MainDashboardPage(),
     );
   }
