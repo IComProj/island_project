@@ -29,6 +29,7 @@ class _HomeViewState extends State<HomeView> {
       builder: (context, userSnapshot) {
         if (userSnapshot.hasData) {
           if (userSnapshot.data!.job.isEmpty) {
+            //if the user hasn't choosen his job yet, build the menu for doing so:
             return buildScaffold("Zuhause",
                 body: Column(
                   children: [
@@ -65,6 +66,8 @@ class _HomeViewState extends State<HomeView> {
                   ],
                 ));
           } else {
+            //if the user has already choosen his job, draw the actions he can execute, his current ressources, etc...
+
             var job = jobs.getJobByName(userSnapshot.data!.job);
             UserData currentUser = userSnapshot.data!;
 
@@ -95,6 +98,10 @@ class _HomeViewState extends State<HomeView> {
                   ]),
                   buildJobDescription(job),
                   Text("Aktionen:", style: StyleCollection.header02TextStyle),
+                  buildNotificationCard(notification.Notification(
+                      "",
+                      "Du kannst jeden Tag nur |eine Aktion| ausführen. Die Resourcenangaben unter den jeweiligen Aktionen geben den Preis an - was die Aktion dann macht, nusst du |selbst herausfinden|!",
+                      0))
                 ]);
 
                 menu.addAll(buildActionsMenu(
@@ -122,10 +129,6 @@ class _HomeViewState extends State<HomeView> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Text(
-        //   "Dein Job: ",
-        //   style: StyleCollection.defaultTextStyle,
-        // ),
         const SizedBox(
           height: 20,
         ),

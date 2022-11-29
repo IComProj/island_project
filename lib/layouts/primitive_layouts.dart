@@ -17,7 +17,7 @@ class ErrorPage extends StatelessWidget {
           ),
           TextButton(
               onPressed: () {
-                changeView(View.login, context);
+                NavigationUtility.changeView(View.login, context);
               },
               style: StyleCollection.defaultButtonStyle,
               child: const Text("Try again"))

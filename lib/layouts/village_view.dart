@@ -96,7 +96,7 @@ class _VillageViewState extends State<VillageView> {
     List<Widget> gridItems =
         List.generate(_users.length, growable: true, (index) {
       var icon = buildGridItem(() {
-        changeToVillagerView(_users[index], context);
+        NavigationUtility.changeToVillagerView(_users[index], context);
       }, Icons.accessibility_new,
           color: ColorPalette.onSecondary, text: _users[index].name);
       return icon;

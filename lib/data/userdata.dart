@@ -66,6 +66,4 @@ class UserData {
     return UserData("", "");
   }
 
-  //   });
-  // }
 }

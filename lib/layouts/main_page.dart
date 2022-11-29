@@ -33,16 +33,16 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
 
   List<Widget> appBarIcons() {
     return [
-      buildIconButton(
-          Icons.holiday_village, () => changeView(View.village, context),
+      buildIconButton(Icons.holiday_village,
+          () => NavigationUtility.changeView(View.village, context),
           text: "Dorf"),
-      buildIconButton(
-          Icons.account_balance_sharp, () => changeView(View.law, context),
+      buildIconButton(Icons.account_balance_sharp,
+          () => NavigationUtility.changeView(View.law, context),
           text: "Gesetz"),
       buildIconButton(Icons.logout, () => FirebaseAuth.instance.signOut(),
           text: "Logout"),
-      buildIconButton(
-          Icons.account_circle, () => changeView(View.home, context),
+      buildIconButton(Icons.account_circle,
+          () => NavigationUtility.changeView(View.home, context),
           text: "Nach Hause")
     ];
   }
