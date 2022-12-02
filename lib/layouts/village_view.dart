@@ -113,20 +113,8 @@ class _VillageViewState extends State<VillageView> {
     );
 
     var scaffold = Scaffold(
-      body: gridView,
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-        onPressed: () => Navigator.of(context).pop(),
-        child: const Icon(
-          Icons.arrow_left,
-          size: 30,
-        ),
-      ),
-      //backgroundColor: ColorPalette.secondary
-    );
+        body: gridView,
+        floatingActionButton: const ReturnFloatingActionButton());
     return scaffold;
   }
 

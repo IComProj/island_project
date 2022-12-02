@@ -31,41 +31,42 @@ class _HomeViewState extends State<HomeView> {
           if (userSnapshot.data!.job.isEmpty) {
             //if the user hasn't choosen his job yet, build the menu for doing so:
             return Scaffold(
+                floatingActionButton: const ReturnFloatingActionButton(),
                 body: Column(
-              children: [
-                NotificationCard(
-                    notification: notification.Notification(
-                        "",
-                        "Das ist dein |Zuhause|. Hier arbeitest du (in diesem Spiel gibt's nur HomeOffice...).",
-                        0)),
-                const SizedBox(
-                  height: 20,
-                ),
-                NotificationCard(
-                    notification: notification.Notification(
-                        "",
-                        "Als erstes musst du deinen |Beruf| wählen. Clicke dich dazu einfach durch den Dropdown (unten).[ENTER]Und keine Panik! Du kannst den Beruf später noch ändern.",
-                        0),
-                    align: TextAlign.center),
-                buildJobDropdown(),
-                buildJobDescription(jobs.all[_dropdownValue ?? 0]),
-                TextButton(
-                    style: Theme.of(context).textButtonTheme.style,
-                    onPressed: () {
-                      var userData = userSnapshot.data!;
+                  children: [
+                    NotificationCard(
+                        notification: notification.Notification(
+                            "",
+                            "Das ist dein |Zuhause|. Hier arbeitest du (in diesem Spiel gibt's nur HomeOffice...).",
+                            0)),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    NotificationCard(
+                        notification: notification.Notification(
+                            "",
+                            "Als erstes musst du deinen |Beruf| wählen. Clicke dich dazu einfach durch den Dropdown (unten).[ENTER]Und keine Panik! Du kannst den Beruf später noch ändern.",
+                            0),
+                        align: TextAlign.center),
+                    buildJobDropdown(),
+                    buildJobDescription(jobs.all[_dropdownValue ?? 0]),
+                    TextButton(
+                        style: Theme.of(context).textButtonTheme.style,
+                        onPressed: () {
+                          var userData = userSnapshot.data!;
 
-                      userData.job = jobs.all[_dropdownValue ?? 0].name;
+                          userData.job = jobs.all[_dropdownValue ?? 0].name;
 
-                      FirebaseUtilities.instance.updateUserData(userData);
+                          FirebaseUtilities.instance.updateUserData(userData);
 
-                      setState(() {});
-                    },
-                    child: Text(
-                      style: Theme.of(context).textTheme.button,
-                      "Job wählen",
-                    ))
-              ],
-            ));
+                          setState(() {});
+                        },
+                        child: Text(
+                          style: Theme.of(context).textTheme.button,
+                          "Job wählen",
+                        ))
+                  ],
+                ));
           } else {
             //if the user has already choosen his job, draw the actions he can execute, his current ressources, etc...
 
@@ -114,12 +115,9 @@ class _HomeViewState extends State<HomeView> {
                     job, things.data ?? Things.empty(), currentUser));
 
                 return Scaffold(
+                  floatingActionButton: const ReturnFloatingActionButton(),
                   body: ListView(children: menu),
                 );
-                // buildScaffold("Zuhause",
-                //     body: ListView(
-                //       children: menu,
-                //     ));
               },
               future: thingsLoader,
             );
@@ -186,7 +184,7 @@ class _HomeViewState extends State<HomeView> {
       DateTime lastActivation = DateTime.parse(currentUser.lastActivation);
       bool isActivateable = a.isActivateable(things) &&
           !isSchedulingJob &&
-          lastActivation.difference(DateTime.now()).inDays <= -1;
+          lastActivation.difference(DateTime.now()).inDays.abs() >= 1;
 
       print(
           "Last activation ${lastActivation.difference(DateTime.now()).inDays.abs()} ago.");
@@ -200,7 +198,7 @@ class _HomeViewState extends State<HomeView> {
                 bool hasResource = things.hasResources(entry.key, entry.value);
 
                 return Row(children: [
-                  getIconForResource(entry.key),
+                  ResourceName.getIconForResource(entry.key),
                   Text(
                     "${entry.key}:",
                     style: hasResource ? null : resourceNotAvailiableTextStyle,
@@ -225,26 +223,25 @@ class _HomeViewState extends State<HomeView> {
                       .textTheme
                       .headline4 //GoogleFonts.oswald(color: Colors.red[400], fontSize: 35),
                   ),
-              TextButton(
-                onPressed: isActivateable
-                    ? () {
-                        setState(() {
-                          isSchedulingJob = true;
-                        });
-                        a.activate();
-                      }
-                    : null,
-                style: Theme.of(context).textButtonTheme.style,
-                child: Text(
-                  "Ausführen",
-                  style: isActivateable
-                      ? null
-                      : Theme.of(context)
-                          .textTheme
-                          .button
-                          ?.apply(color: Theme.of(context).disabledColor),
-                ),
-              )
+              lastActivation.difference(DateTime.now()).inDays.abs() >= 1
+                  ? TextButton(
+                      onPressed: isActivateable
+                          ? () {
+                              setState(() {
+                                isSchedulingJob = true;
+                              });
+                              a.activate();
+                            }
+                          : null,
+                      style: Theme.of(context).textButtonTheme.style,
+                      child: Text("Ausführen",
+                          style: isActivateable
+                              ? null
+                              : Theme.of(context).textTheme.button?.apply(
+                                  color: Theme.of(context).disabledColor)))
+                  : const CircularProgressIndicator(
+                      color: Colors.grey,
+                    )
             ],
           ),
           Row(

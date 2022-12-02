@@ -198,36 +198,54 @@ class NotificationCard extends StatelessWidget {
     }
 
     return Card(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        notification.iconID == 0 || notification.message == ""
-            ? const SizedBox(
-                height: 0,
-                width: 0,
-              )
-            : Row(children: [
-                Icon(
-                  IconData(notification.iconID, fontFamily: "MaterialIcons"),
-                  size: 30,
+        child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                notification.iconID == 0 || notification.message == ""
+                    ? const SizedBox(
+                        height: 0,
+                        width: 0,
+                      )
+                    : Row(children: [
+                        Icon(
+                          IconData(notification.iconID,
+                              fontFamily: "MaterialIcons"),
+                          size: 30,
+                        ),
+                        const Spacer(),
+                        Text(
+                          notification.modificationDate,
+                        )
+                      ]),
+                RichText(
+                  textAlign: align,
+                  text: TextSpan(
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      children: markedText),
                 ),
-                const Spacer(),
-                Text(
-                  notification.modificationDate,
-                  //style: StyleCollection.defaultTextStyle,
-                )
-              ]),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: RichText(
-            textAlign: align,
-            text: TextSpan(
-                style: Theme.of(context).textTheme.bodyLarge,
-                children: markedText),
-          ),
-        )
-      ],
-    ));
+              ],
+            )));
+  }
+}
+
+class ReturnFloatingActionButton extends StatelessWidget {
+  const ReturnFloatingActionButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      mini: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+      onPressed: () => Navigator.of(context).pop(),
+      child: const Icon(
+        Icons.arrow_left,
+        size: 30,
+      ),
+    );
   }
 }
 
@@ -245,75 +263,83 @@ Widget buildIconButton(IconData iconData, Function() onPressed,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Icon(
-                    iconData, size: 35,
-                    //color: ColorPalette.primary
+                    iconData,
+                    size: 35,
                   ),
                   Text(
                     text,
-                    //style: StyleCollection.tabTextStyle
                   )
                 ],
               ))));
 }
 
-Widget buildResourceCard(Things things) {
-  Widget resourcesList = Column(
-      children: things.content.entries.map((e) {
-    return Row(children: [
-      getIconForResource(e.key),
-      Text("${e.key}:"),
-      const Spacer(),
-      Text("${e.value}")
-    ]);
-  }).toList());
+class ResourceCard extends StatelessWidget {
+  const ResourceCard({super.key, required this.things});
 
-  resourcesList = things.content.isEmpty
-      ? const Text("Der Spieler hat noch keine Resourcen")
-      : resourcesList;
+  final Things things;
 
-  return Card(
-      elevation: 10,
-      margin: const EdgeInsets.all(8),
-      //color: ColorPalette.background,
-      child: Center(
-        child: Column(
-          children: [
-            Text(
-              "Resourcen:", //style: StyleCollection.defaultTextStyle
-            ),
-            const SizedBox(height: 10),
-            resourcesList
-          ],
-        ),
-      ));
-}
+  @override
+  Widget build(BuildContext context) {
+    Widget resourcesList = Column(
+        children: things.content.entries.map((e) {
+      return Row(children: [
+        ResourceName.getIconForResource(e.key),
+        Text("${e.key}:"),
+        const Spacer(),
+        Text("${e.value}")
+      ]);
+    }).toList());
 
-Icon getIconForResource(String resourceName) {
-  switch (resourceName) {
-    case ResourceName.gold:
-      return const Icon(
-        UniconsLine.dollar_alt,
-        color: Colors.amber,
-      );
-    case ResourceName.apple:
-      return const Icon(
-        Icons.apple,
-        color: Colors.red,
-      );
-    case ResourceName.shovel:
-      return const Icon(
-        UniconsLine.shovel,
-        color: Colors.blueGrey,
-      );
-    case ResourceName.wheat:
-      return const Icon(
-        UniconsLine.trees,
-        color: Colors.yellow,
-      );
-    case ResourceName.meat:
-      return Icon(Ionicons.fast_food, color: Colors.amber[700]);
+    resourcesList = things.content.isEmpty
+        ? const Text("Der Spieler hat noch keine Resourcen")
+        : resourcesList;
 
-    default:
-      return const Icon(UniconsLine.gold);
+    return Card(
+        elevation: 10,
+        margin: const EdgeInsets.all(8),
+        //color: ColorPalette.background,
+        child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Center(
+              child: Column(
+                children: [
+                  const Text(
+                    "Resourcen:", //style: StyleCollection.defaultTextStyle
+                  ),
+                  const SizedBox(height: 10),
+                  resourcesList
+                ],
+              ),
+            )));
   }
 }
+
+// Icon getIconForResource(String resourceName) {
+//   switch (resourceName) {
+//     case ResourceName.gold:
+//       return const Icon(
+//         UniconsLine.dollar_alt,
+//         color: Colors.amber,
+//       );
+//     case ResourceName.apple:
+//       return const Icon(
+//         Icons.apple,
+//         color: Colors.red,
+//       );
+//     case ResourceName.shovel:
+//       return const Icon(
+//         UniconsLine.shovel,
+//         color: Colors.blueGrey,
+//       );
+//     case ResourceName.wheat:
+//       return const Icon(
+//         UniconsLine.trees,
+//         color: Colors.yellow,
+//       );
+//     case ResourceName.meat:
+//       return Icon(Ionicons.fast_food, color: Colors.amber[700]);
+
+//     default:
+//       return const Icon(UniconsLine.gold);
+//   }
+// }

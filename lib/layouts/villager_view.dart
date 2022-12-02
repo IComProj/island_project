@@ -47,26 +47,28 @@ class _VillagerViewState extends State<VillagerView> {
     lastActivation ?? DateTime(1313);
 
     return Scaffold(
-        //"Dorfbewohner: ${widget.userData.name}",
+        appBar: AppBar(title: Text("Dorfbewohner: ${widget.userData.name}")),
         body: ListView(children: [
-      Padding(
-        padding: const EdgeInsets.all(8),
-        child: Card(
-          elevation: 10,
-          child: Column(
-            children: [
-              Text(
-                "Infos:",
-                //style: StyleCollection.defaultTextStyle,
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Card(
+              elevation: 10,
+              child: Column(
+                children: [
+                  Text(
+                    "Infos",
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                      "Letzte Aktivität: ${lastActivation?.day ?? "00"}.${lastActivation?.month ?? "00"}.${lastActivation?.year ?? "0000"}"),
+                  Text(
+                      "Beruf: ${widget.userData.job == "" ? "Arbeitslos" : widget.userData.job}")
+                ],
               ),
-              Text(
-                  "Letzte Aktivität: ${lastActivation?.day}.${lastActivation?.month}.${lastActivation?.year}")
-            ],
+            ),
           ),
-        ),
-      ),
-      buildResourceCard(ownedThings ?? Things.empty())
-    ]));
+          ResourceCard(things: ownedThings ?? Things.empty())
+        ]));
   }
 
   @override

@@ -1,4 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:unicons/unicons.dart';
 
 class Things {
   Things(this.owner, this.content);
@@ -52,9 +55,43 @@ class Things {
 }
 
 class ResourceName {
+  //static class --> no constructor
+
+  ResourceName._();
+
   static const String gold = "GOLD";
   static const String wheat = "GETREIDE";
   static const String apple = "ÄPFEL";
   static const String shovel = "SCHAUFEL";
   static const String meat = "FLEISCH";
+
+  static Icon getIconForResource(String resourceName) {
+    switch (resourceName) {
+      case ResourceName.gold:
+        return const Icon(
+          UniconsLine.dollar_alt,
+          color: Colors.amber,
+        );
+      case ResourceName.apple:
+        return const Icon(
+          Icons.apple,
+          color: Colors.red,
+        );
+      case ResourceName.shovel:
+        return const Icon(
+          UniconsLine.shovel,
+          color: Colors.blueGrey,
+        );
+      case ResourceName.wheat:
+        return const Icon(
+          UniconsLine.trees,
+          color: Colors.yellow,
+        );
+      case ResourceName.meat:
+        return Icon(Ionicons.fast_food, color: Colors.amber[700]);
+
+      default:
+        return const Icon(UniconsLine.gold);
+    }
+  }
 }
