@@ -58,47 +58,13 @@ class _VillageViewState extends State<VillageView> {
 
   @override
   Widget build(BuildContext context) {
-    // var userList = List.generate(_users.length, (index) {
-    //   return buildUserCard(_users[index].name, (username) {
-    //     //Feedback.forTap(context);
-    //     changeToVillagerView(_users[index], context);
-    //   });
-    // });
-
-    // List<Widget> children = [
-    //   Padding(
-    //     padding: const EdgeInsets.all(8),
-    //     child: Text("Das is euer Dorf. Hier kannst du handlen, usw...",
-    //         textAlign: TextAlign.center,
-    //         style: StyleCollection.middleTextStyle),
-    //   )
-    // ];
-    // children.addAll(userList);
-
-    // ListView view;
-    // if (children.isNotEmpty) {
-    //   view = ListView(children: children);
-    // } else {
-    //   view = ListView(
-    //     children: [
-    //       Center(
-    //           child: Column(children: [
-    //         const CircularProgressIndicator(),
-    //         Text(
-    //           "Loading...",
-    //           style: StyleCollection.middleTextStyle,
-    //         )
-    //       ])),
-    //     ],
-    //   );
-    // }
-
     List<Widget> gridItems =
         List.generate(_users.length, growable: true, (index) {
       var icon = buildGridItem(() {
         NavigationUtility.changeToVillagerView(_users[index], context);
       }, Icons.accessibility_new,
-          color: ColorPalette.onSecondary, text: _users[index].name);
+          //color: ColorPalette.onSecondary,
+          text: _users[index].name);
       return icon;
     });
 
@@ -142,12 +108,25 @@ class _VillageViewState extends State<VillageView> {
           );
         }, UniconsLine.question_circle, color: Colors.red, text: "Info"));
 
-    GridView gridView = GridView.count(crossAxisCount: 4, children: gridItems);
+    Widget gridView = Stack(
+      children: [GridView.count(crossAxisCount: 4, children: gridItems)],
+    );
 
-    var scaffold = buildScaffold("Dorf",
-        //bottomAppBar: buildBottomAppBar(),
-        body: gridView,
-        backgroundColor: ColorPalette.secondary);
+    var scaffold = Scaffold(
+      body: gridView,
+      floatingActionButton: FloatingActionButton(
+        mini: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        onPressed: () => Navigator.of(context).pop(),
+        child: const Icon(
+          Icons.arrow_left,
+          size: 30,
+        ),
+      ),
+      //backgroundColor: ColorPalette.secondary
+    );
     return scaffold;
   }
 

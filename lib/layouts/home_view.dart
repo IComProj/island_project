@@ -30,41 +30,42 @@ class _HomeViewState extends State<HomeView> {
         if (userSnapshot.hasData) {
           if (userSnapshot.data!.job.isEmpty) {
             //if the user hasn't choosen his job yet, build the menu for doing so:
-            return buildScaffold("Zuhause",
+            return Scaffold(
                 body: Column(
-                  children: [
-                    buildNotificationCard(notification.Notification(
+              children: [
+                NotificationCard(
+                    notification: notification.Notification(
                         "",
                         "Das ist dein |Zuhause|. Hier arbeitest du (in diesem Spiel gibt's nur HomeOffice...).",
                         0)),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    buildNotificationCard(
-                        notification.Notification(
-                            "",
-                            "Als erstes musst du deinen |Beruf| wählen. Clicke dich dazu einfach durch den Dropdown (unten).[ENTER]Und keine Panik! Du kannst den Beruf später noch ändern.",
-                            0),
-                        textAlign: TextAlign.center),
-                    buildJobDropdown(),
-                    buildJobDescription(jobs.all[_dropdownValue ?? 0]),
-                    TextButton(
-                        style: Theme.of(context).textButtonTheme.style,
-                        onPressed: () {
-                          var userData = userSnapshot.data!;
+                const SizedBox(
+                  height: 20,
+                ),
+                NotificationCard(
+                    notification: notification.Notification(
+                        "",
+                        "Als erstes musst du deinen |Beruf| wählen. Clicke dich dazu einfach durch den Dropdown (unten).[ENTER]Und keine Panik! Du kannst den Beruf später noch ändern.",
+                        0),
+                    align: TextAlign.center),
+                buildJobDropdown(),
+                buildJobDescription(jobs.all[_dropdownValue ?? 0]),
+                TextButton(
+                    style: Theme.of(context).textButtonTheme.style,
+                    onPressed: () {
+                      var userData = userSnapshot.data!;
 
-                          userData.job = jobs.all[_dropdownValue ?? 0].name;
+                      userData.job = jobs.all[_dropdownValue ?? 0].name;
 
-                          FirebaseUtilities.instance.updateUserData(userData);
+                      FirebaseUtilities.instance.updateUserData(userData);
 
-                          setState(() {});
-                        },
-                        child: Text(
-                          style: Theme.of(context).textTheme.button,
-                          "Job wählen",
-                        ))
-                  ],
-                ));
+                      setState(() {});
+                    },
+                    child: Text(
+                      style: Theme.of(context).textTheme.button,
+                      "Job wählen",
+                    ))
+              ],
+            ));
           } else {
             //if the user has already choosen his job, draw the actions he can execute, his current ressources, etc...
 
@@ -85,10 +86,11 @@ class _HomeViewState extends State<HomeView> {
             return FutureBuilder(
               builder: (context, things) {
                 var menu = List.of([
-                  buildNotificationCard(notification.Notification(
-                      "",
-                      "Das ist dein |Zuhause|. Hier arbeitest du (in diesem Spiel gibt's nur HomeOffice...).",
-                      0)),
+                  NotificationCard(
+                      notification: notification.Notification(
+                          "",
+                          "Das ist dein |Zuhause|. Hier arbeitest du (in diesem Spiel gibt's nur HomeOffice...).",
+                          0)),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Text("Dein zurzeitiger Beruf:  ",
                         style: Theme.of(context).textTheme.headline5),
@@ -101,19 +103,23 @@ class _HomeViewState extends State<HomeView> {
                     style: Theme.of(context).textTheme.headline4,
                     textAlign: TextAlign.center,
                   ),
-                  buildNotificationCard(notification.Notification(
-                      "",
-                      "Du kannst jeden Tag nur |eine Aktion| ausführen. Die Resourcenangaben unter den jeweiligen Aktionen geben den Preis an - was die Aktion dann macht, nusst du |selbst herausfinden|!",
-                      0))
+                  NotificationCard(
+                      notification: notification.Notification(
+                          "",
+                          "Du kannst jeden Tag nur |eine Aktion| ausführen. Die Resourcenangaben unter den jeweiligen Aktionen geben den Preis an - was die Aktion dann macht, nusst du |selbst herausfinden|!",
+                          0))
                 ]);
 
                 menu.addAll(buildActionsMenu(
                     job, things.data ?? Things.empty(), currentUser));
 
-                return buildScaffold("Zuhause",
-                    body: ListView(
-                      children: menu,
-                    ));
+                return Scaffold(
+                  body: ListView(children: menu),
+                );
+                // buildScaffold("Zuhause",
+                //     body: ListView(
+                //       children: menu,
+                //     ));
               },
               future: thingsLoader,
             );
@@ -168,9 +174,9 @@ class _HomeViewState extends State<HomeView> {
   Widget buildJobDescription(jobs.Job job) {
     return Padding(
       padding: const EdgeInsets.all(20),
-      child: buildNotificationCard(
-          notification.Notification("", job.description, 0),
-          textAlign: TextAlign.center),
+      child: NotificationCard(
+          notification: notification.Notification("", job.description, 0),
+          align: TextAlign.center),
     );
   }
 

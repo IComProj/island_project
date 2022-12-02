@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Island Project',
       theme: ThemeData.dark().copyWith(
-          disabledColor: Colors.grey.shade700,
           textButtonTheme: TextButtonThemeData(style:
               ButtonStyle(shape: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) {
@@ -40,6 +39,13 @@ class MyApp extends StatelessWidget {
             displayColor: Colors.red.shade700,
             bodyColor: greenPrimary,
           ),
+          iconTheme: IconThemeData(color: greenPrimary),
+          bottomAppBarTheme:
+              const BottomAppBarTheme(color: Color.fromARGB(255, 20, 20, 20)),
+          cardTheme: CardTheme(color: Color.fromARGB(255, 21, 26, 20)),
+          cardColor: Colors.grey.shade900,
+          scaffoldBackgroundColor: Colors.black,
+          disabledColor: Colors.grey.shade700,
           colorScheme: ColorScheme.dark(
               background: Colors.black,
               primary: greenPrimary,
@@ -54,18 +60,18 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  ColorScheme _generateColorSceme() {
-    return const ColorScheme(
-        brightness: ColorPalette.brightness,
-        primary: ColorPalette.primary,
-        onPrimary: ColorPalette.onPrimary,
-        secondary: ColorPalette.secondary,
-        onSecondary: ColorPalette.onSecondary,
-        error: ColorPalette.error,
-        onError: ColorPalette.onError,
-        background: ColorPalette.background,
-        onBackground: ColorPalette.onBackground,
-        surface: ColorPalette.surface,
-        onSurface: ColorPalette.onSurface);
-  }
+  // ColorScheme _generateColorSceme() {
+  //   return const ColorScheme(
+  //       brightness: ColorPalette.brightness,
+  //       primary: ColorPalette.primary,
+  //       onPrimary: ColorPalette.onPrimary,
+  //       secondary: ColorPalette.secondary,
+  //       onSecondary: ColorPalette.onSecondary,
+  //       error: ColorPalette.error,
+  //       onError: ColorPalette.onError,
+  //       background: ColorPalette.background,
+  //       onBackground: ColorPalette.onBackground,
+  //       surface: ColorPalette.surface,
+  //       onSurface: ColorPalette.onSurface);
+  // }
 }

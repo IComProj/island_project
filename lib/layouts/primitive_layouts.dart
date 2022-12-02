@@ -7,21 +7,24 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var errorPage = buildScaffold("Error",
+    var errorPage = Scaffold(
         body: Center(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Text(
-            "An error occured!",
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          TextButton(
-              onPressed: () {
-                NavigationUtility.changeView(View.login, context);
-              },
-              style: StyleCollection.defaultButtonStyle,
-              child: const Text("Try again"))
-        ])));
+      const Text(
+        "An error occured!",
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      TextButton(
+          onPressed: () {
+            NavigationUtility.changeView(View.login, context);
+          },
+          style: Theme.of(context).textButtonTheme.style,
+          child: Text(
+            "Try again",
+            style: Theme.of(context).textTheme.button,
+          ))
+    ])));
     return errorPage;
   }
 }
@@ -31,12 +34,12 @@ class LoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var loadingPage = buildScaffold("Loading...",
+    var loadingPage = Scaffold(
         body: const Center(
             child: CircularProgressIndicator(
-          backgroundColor: Colors.transparent,
-          color: Colors.green,
-        )));
+      backgroundColor: Colors.transparent,
+      color: Colors.green,
+    )));
 
     return loadingPage;
   }

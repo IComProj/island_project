@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
@@ -7,93 +6,93 @@ import 'package:island_project/data/notification.dart' as notifications;
 import 'package:island_project/data/thing.dart';
 import 'package:unicons/unicons.dart';
 
-class StyleCollection {
-  // static ButtonStyle defaultButtonStyle = ButtonStyle(
-  //     backgroundColor: MaterialStateProperty.all<Color>(Colors.black26));
+// class StyleCollection {
+//   // static ButtonStyle defaultButtonStyle = ButtonStyle(
+//   //     backgroundColor: MaterialStateProperty.all<Color>(Colors.black26));
 
-  ///The defeult TextStyle. Main color: light green
-  static TextStyle defaultTextStyle =
-      GoogleFonts.oswald(color: ColorPalette.primary, fontSize: 20);
+//   ///The defeult TextStyle. Main color: light green
+//   static TextStyle defaultTextStyle =
+//       GoogleFonts.oswald(color: ColorPalette.primary, fontSize: 20);
 
-  static TextStyle secondaryTextStyle =
-      GoogleFonts.oswald(color: ColorPalette.onPrimary, fontSize: 20);
+//   static TextStyle secondaryTextStyle =
+//       GoogleFonts.oswald(color: ColorPalette.onPrimary, fontSize: 20);
 
-  ///A style for each button
-  static ButtonStyle defaultButtonStyle =
-      ButtonStyle(surfaceTintColor: MaterialStateProperty.resolveWith((states) {
-    if (states.contains(MaterialState.pressed)) {
-      return ColorPalette.onSecondary;
-    }
-    return ColorPalette.primary;
-  }), shape: MaterialStateProperty.resolveWith((states) {
-    if (states.contains(MaterialState.pressed)) {
-      return RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-          side: const BorderSide(color: ColorPalette.onPrimary));
-    }
+//   ///A style for each button
+//   static ButtonStyle defaultButtonStyle =
+//       ButtonStyle(surfaceTintColor: MaterialStateProperty.resolveWith((states) {
+//     if (states.contains(MaterialState.pressed)) {
+//       return ColorPalette.onSecondary;
+//     }
+//     return ColorPalette.primary;
+//   }), shape: MaterialStateProperty.resolveWith((states) {
+//     if (states.contains(MaterialState.pressed)) {
+//       return RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(18),
+//           side: const BorderSide(color: ColorPalette.onPrimary));
+//     }
 
-    return RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-        side: const BorderSide(color: ColorPalette.primary));
-  }));
+//     return RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(18),
+//         side: const BorderSide(color: ColorPalette.primary));
+//   }));
 
-  static ButtonStyle disabledButtonStyle =
-      ButtonStyle(surfaceTintColor: MaterialStateProperty.resolveWith((states) {
-    if (states.contains(MaterialState.pressed)) {
-      return ColorPalette.onSecondary;
-    }
-    return const Color.fromARGB(255, 135, 135, 135);
-  }), shape: MaterialStateProperty.resolveWith((states) {
-    if (states.contains(MaterialState.pressed)) {
-      return RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-          side: const BorderSide(color: ColorPalette.onPrimary));
-    }
+//   static ButtonStyle disabledButtonStyle =
+//       ButtonStyle(surfaceTintColor: MaterialStateProperty.resolveWith((states) {
+//     if (states.contains(MaterialState.pressed)) {
+//       return ColorPalette.onSecondary;
+//     }
+//     return const Color.fromARGB(255, 135, 135, 135);
+//   }), shape: MaterialStateProperty.resolveWith((states) {
+//     if (states.contains(MaterialState.pressed)) {
+//       return RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(18),
+//           side: const BorderSide(color: ColorPalette.onPrimary));
+//     }
 
-    return RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-        side: const BorderSide(color: Color.fromARGB(255, 150, 150, 150)));
-  }));
+//     return RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(18),
+//         side: const BorderSide(color: Color.fromARGB(255, 150, 150, 150)));
+//   }));
 
-  static TextStyle disabledTextStyle =
-      const TextStyle(color: Color.fromARGB(255, 135, 135, 135));
+//   static TextStyle disabledTextStyle =
+//       const TextStyle(color: Color.fromARGB(255, 135, 135, 135));
 
-  ///A style for each header that's on non-black background
-  static TextStyle header01TextStyle = GoogleFonts.oswald(
-      color: Colors.black,
-      fontSize: 30,
-      textStyle: const TextStyle(decoration: TextDecoration.underline));
+//   ///A style for each header that's on non-black background
+//   static TextStyle header01TextStyle = GoogleFonts.oswald(
+//       color: Colors.black,
+//       fontSize: 30,
+//       textStyle: const TextStyle(decoration: TextDecoration.underline));
 
-  ///A style for each header that's on black-like background
-  static TextStyle header02TextStyle = GoogleFonts.oswald(
-      color: Colors.red[400],
-      fontSize: 30,
-      textStyle: const TextStyle(decoration: TextDecoration.underline));
+//   ///A style for each header that's on black-like background
+//   static TextStyle header02TextStyle = GoogleFonts.oswald(
+//       color: Colors.red[400],
+//       fontSize: 30,
+//       textStyle: const TextStyle(decoration: TextDecoration.underline));
 
-  ///A style for the text of the BottomAppBar
-  static TextStyle tabTextStyle = const TextStyle(color: ColorPalette.primary);
-}
+//   ///A style for the text of the BottomAppBar
+//   static TextStyle tabTextStyle = const TextStyle(color: ColorPalette.primary);
+// }
 
-Scaffold buildScaffold(String title,
-    {BottomAppBar? bottomAppBar,
-    Widget? body,
-    Widget? floatingActionButton,
-    Color? backgroundColor}) {
-  return Scaffold(
-    backgroundColor: backgroundColor,
-    appBar: AppBar(
-      title: Center(
-          child: Text(
-        title,
-        style: StyleCollection.header01TextStyle,
-      )),
-    ),
-    bottomNavigationBar: bottomAppBar,
-    floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    floatingActionButton: floatingActionButton,
-    body: body,
-  );
-}
+// Scaffold buildScaffold(String title,
+//     {BottomAppBar? bottomAppBar,
+//     Widget? body,
+//     Widget? floatingActionButton,
+//     Color? backgroundColor}) {
+//   return Scaffold(
+//     backgroundColor: backgroundColor,
+//     appBar: AppBar(
+//       title: Center(
+//           child: Text(
+//         title,
+//         style: StyleCollection.header01TextStyle,
+//       )),
+//     ),
+//     bottomNavigationBar: bottomAppBar,
+//     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+//     floatingActionButton: floatingActionButton,
+//     body: body,
+//   );
+// }
 
 BottomAppBar buildBottomAppBar({List<Widget>? icons}) {
   icons ??= [
@@ -122,7 +121,7 @@ Widget buildUserCard(String username, Function(String username) onClick) {
           elevation: 10,
           shadowColor: Colors.black,
           margin: const EdgeInsets.all(6),
-          color: ColorPalette.background,
+          //color: ColorPalette.background,
           child: Center(
             child: Container(
               margin: const EdgeInsets.all(8),
@@ -130,12 +129,14 @@ Widget buildUserCard(String username, Function(String username) onClick) {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Icon(Icons.account_circle,
-                        size: 45, color: ColorPalette.primary),
+                    const Icon(
+                      Icons.account_circle,
+                      size: 45, //color: ColorPalette.primary
+                    ),
                     Column(children: [
                       Text(
                         username,
-                        style: StyleCollection.defaultTextStyle,
+                        //style: StyleCollection.defaultTextStyle,
                       )
                     ])
                   ]),
@@ -158,7 +159,7 @@ Widget buildGridItem(Function()? onClick, IconData? iconData,
           text != null
               ? Text(
                   text,
-                  style: StyleCollection.secondaryTextStyle,
+                  //style: StyleCollection.secondaryTextStyle,
                 )
               : const SizedBox(
                   width: 0,
@@ -168,54 +169,67 @@ Widget buildGridItem(Function()? onClick, IconData? iconData,
       ));
 }
 
-Widget buildNotificationCard(notifications.Notification notification,
-    {TextAlign textAlign = TextAlign.start}) {
-  var splitted = notification.message.split("|");
+class NotificationCard extends StatelessWidget {
+  const NotificationCard(
+      {Key? key, required this.notification, this.align = TextAlign.start})
+      : super(key: key);
 
-  List<TextSpan> markedText = List.empty(growable: true);
+  final notifications.Notification notification;
+  final TextAlign align;
 
-  bool markText = false;
+  @override
+  Widget build(BuildContext context) {
+    final List<TextSpan> markedText = List.empty(growable: true);
+    var splitted = notification.message.split("|");
 
-  for (var element in splitted) {
-    markedText.add(TextSpan(
-        text: element.replaceAll("[ENTER]", "\n"),
-        style: markText
-            ? const TextStyle(color: Colors.amber, fontSize: 23)
-            : null));
+    bool markText = false;
 
-    markText = !markText;
-  }
+    for (var element in splitted) {
+      markedText.add(TextSpan(
+          text: element.replaceAll("[ENTER]", "\n"),
+          style: markText
+              ? Theme.of(context)
+                  .textTheme
+                  .headline6
+                  ?.apply(color: Colors.amber)
+              : null));
 
-  return Card(
-      child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      notification.iconID == 0 || notification.message == ""
-          ? const SizedBox(
-              height: 0,
-              width: 0,
-            )
-          : Row(children: [
-              Icon(
-                IconData(notification.iconID, fontFamily: "MaterialIcons"),
-                size: 30,
-              ),
-              const Spacer(),
-              Text(
-                notification.modificationDate,
-                style: StyleCollection.defaultTextStyle,
+      markText = !markText;
+    }
+
+    return Card(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        notification.iconID == 0 || notification.message == ""
+            ? const SizedBox(
+                height: 0,
+                width: 0,
               )
-            ]),
-      RichText(
-        textAlign: textAlign,
-        text: TextSpan(
-            style: StyleCollection.defaultTextStyle, children: markedText),
-      ),
-    ],
-  ));
+            : Row(children: [
+                Icon(
+                  IconData(notification.iconID, fontFamily: "MaterialIcons"),
+                  size: 30,
+                ),
+                const Spacer(),
+                Text(
+                  notification.modificationDate,
+                  //style: StyleCollection.defaultTextStyle,
+                )
+              ]),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: RichText(
+            textAlign: align,
+            text: TextSpan(
+                style: Theme.of(context).textTheme.bodyLarge,
+                children: markedText),
+          ),
+        )
+      ],
+    ));
+  }
 }
-
-//double _appBarIconSize = 40;
 
 Widget buildIconButton(IconData iconData, Function() onPressed,
     {String text = ""}) {
@@ -230,8 +244,14 @@ Widget buildIconButton(IconData iconData, Function() onPressed,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Icon(iconData, size: 35, color: ColorPalette.primary),
-                  Text(text, style: StyleCollection.tabTextStyle)
+                  Icon(
+                    iconData, size: 35,
+                    //color: ColorPalette.primary
+                  ),
+                  Text(
+                    text,
+                    //style: StyleCollection.tabTextStyle
+                  )
                 ],
               ))));
 }
@@ -254,11 +274,13 @@ Widget buildResourceCard(Things things) {
   return Card(
       elevation: 10,
       margin: const EdgeInsets.all(8),
-      color: ColorPalette.background,
+      //color: ColorPalette.background,
       child: Center(
         child: Column(
           children: [
-            Text("Resourcen:", style: StyleCollection.defaultTextStyle),
+            Text(
+              "Resourcen:", //style: StyleCollection.defaultTextStyle
+            ),
             const SizedBox(height: 10),
             resourcesList
           ],

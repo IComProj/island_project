@@ -87,8 +87,8 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
   }
 
   Widget buildMainDashboard() {
-    return buildScaffold("Dashboard",
-        bottomAppBar: buildBottomAppBar(icons: appBarIcons()),
+    return Scaffold(
+        bottomNavigationBar: buildBottomAppBar(icons: appBarIcons()),
         body: buildNotificationBoard());
   }
 
@@ -105,7 +105,7 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
           notifications.Notification.parseFromSnapshot(value.snapshot).reversed;
 
       return ListView(
-        children: notes.map((e) => buildNotificationCard(e)).toList(),
+        children: notes.map((e) => NotificationCard(notification: e)).toList(),
       );
     });
 
