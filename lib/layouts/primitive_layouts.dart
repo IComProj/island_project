@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:island_project/data/thing.dart';
 import 'package:island_project/data/notification.dart' as notifications;
-import 'package:island_project/utilities/layout_utilities.dart';
 import 'package:island_project/utilities/navigation_utilities.dart';
 
 class ErrorPage extends StatelessWidget {

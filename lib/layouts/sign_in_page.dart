@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:island_project/data/preference_constants.dart';
 import 'package:island_project/data/userdata.dart';
 import 'package:island_project/utilities/firebase_utilities.dart';
-import 'package:island_project/utilities/layout_utilities.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInPage extends StatefulWidget {

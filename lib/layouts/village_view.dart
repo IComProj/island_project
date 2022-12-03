@@ -7,7 +7,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:island_project/data/userdata.dart';
 import 'package:island_project/layouts/primitive_layouts.dart';
-import 'package:island_project/utilities/layout_utilities.dart';
 import 'package:island_project/utilities/navigation_utilities.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:unicons/unicons.dart';

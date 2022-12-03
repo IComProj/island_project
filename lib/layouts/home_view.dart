@@ -8,7 +8,6 @@ import 'package:island_project/data/userdata.dart';
 import 'package:island_project/layouts/primitive_layouts.dart';
 import 'package:island_project/layouts/sign_in_page.dart';
 import 'package:island_project/utilities/firebase_utilities.dart';
-import 'package:island_project/utilities/layout_utilities.dart';
 import 'package:island_project/data/jobs/jobs.dart' as jobs;
 
 class HomeView extends StatefulWidget {

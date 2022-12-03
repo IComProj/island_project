@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:island_project/data/thing.dart';
 import 'package:island_project/data/userdata.dart';
 import 'package:island_project/layouts/primitive_layouts.dart';
-import 'package:island_project/utilities/layout_utilities.dart';
 
 class VillagerView extends StatefulWidget {
   final UserData userData;
