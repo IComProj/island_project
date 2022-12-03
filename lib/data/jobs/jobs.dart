@@ -44,11 +44,25 @@ abstract class Job {
   String description = "";
 
   List<JobAction> getActions() {
-    return List.empty();
+    return List.empty(growable: true);
   }
 }
 
-class Hunter extends Job {
+class Craftsmen extends Job {
+  @override
+  List<JobAction> getActions() {
+    var actions = super.getActions();
+
+    actions.add(
+        JobAction("Haus bauen", iconData: UniconsLine.shovel, onActivate: () {
+      FirebaseUtilities.instance.setLastActivation();
+    }, requirements: {}));
+
+    return actions;
+  }
+}
+
+class Hunter extends Craftsmen {
   @override
   String get name => "Jäger";
 
@@ -61,6 +75,8 @@ class Hunter extends Job {
 
   @override
   List<JobAction> getActions() {
+    var actions = super.getActions();
+
     var huntAction = JobAction("Jagen", onActivate: () {
       FirebaseUtilities.instance.setLastActivation();
     }, iconData: Ionicons.locate, requirements: {});
@@ -71,11 +87,10 @@ class Hunter extends Job {
       ResourceName.shovel: 1,
     });
 
-    List<JobAction> result = List.from([huntAction, placeTrap]);
+    actions.add(huntAction);
+    actions.add(placeTrap);
 
-    result.addAll(super.getActions());
-
-    return result;
+    return actions;
   }
 }
 

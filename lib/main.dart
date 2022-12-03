@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:island_project/data/color_palette.dart';
 
 import 'layouts/main_page.dart';
 
@@ -46,6 +45,7 @@ class MyApp extends StatelessWidget {
           cardColor: Colors.grey.shade900,
           scaffoldBackgroundColor: Colors.black,
           disabledColor: Colors.grey.shade700,
+          primaryColor: greenPrimary,
           colorScheme: ColorScheme.dark(
               background: Colors.black,
               primary: greenPrimary,

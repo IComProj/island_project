@@ -28,45 +28,46 @@ class _HomeViewState extends State<HomeView> {
     return FutureBuilder(
       builder: (context, userSnapshot) {
         if (userSnapshot.hasData) {
+          Widget body;
+
           if (userSnapshot.data!.job.isEmpty) {
             //if the user hasn't choosen his job yet, build the menu for doing so:
-            return Scaffold(
-                floatingActionButton: const ReturnFloatingActionButton(),
-                body: Column(
-                  children: [
-                    NotificationCard(
-                        notification: notification.Notification(
-                            "",
-                            "Das ist dein |Zuhause|. Hier arbeitest du (in diesem Spiel gibt's nur HomeOffice...).",
-                            0)),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    NotificationCard(
-                        notification: notification.Notification(
-                            "",
-                            "Als erstes musst du deinen |Beruf| wählen. Clicke dich dazu einfach durch den Dropdown (unten).[ENTER]Und keine Panik! Du kannst den Beruf später noch ändern.",
-                            0),
-                        align: TextAlign.center),
-                    buildJobDropdown(),
-                    buildJobDescription(jobs.all[_dropdownValue ?? 0]),
-                    TextButton(
-                        style: Theme.of(context).textButtonTheme.style,
-                        onPressed: () {
-                          var userData = userSnapshot.data!;
 
-                          userData.job = jobs.all[_dropdownValue ?? 0].name;
+            body = Column(
+              children: [
+                NotificationCard(
+                    notification: notification.Notification(
+                        "",
+                        "Das ist dein |Zuhause|. Hier arbeitest du (in diesem Spiel gibt's nur HomeOffice...).",
+                        0)),
+                const SizedBox(
+                  height: 20,
+                ),
+                NotificationCard(
+                    notification: notification.Notification(
+                        "",
+                        "Als erstes musst du deinen |Beruf| wählen. Clicke dich dazu einfach durch den Dropdown (unten).[ENTER]Und keine Panik! Du kannst den Beruf später noch ändern.",
+                        0),
+                    align: TextAlign.center),
+                buildJobDropdown(),
+                buildJobDescription(jobs.all[_dropdownValue ?? 0]),
+                TextButton(
+                    style: Theme.of(context).textButtonTheme.style,
+                    onPressed: () {
+                      var userData = userSnapshot.data!;
 
-                          FirebaseUtilities.instance.updateUserData(userData);
+                      userData.job = jobs.all[_dropdownValue ?? 0].name;
 
-                          setState(() {});
-                        },
-                        child: Text(
-                          style: Theme.of(context).textTheme.button,
-                          "Job wählen",
-                        ))
-                  ],
-                ));
+                      FirebaseUtilities.instance.updateUserData(userData);
+
+                      setState(() {});
+                    },
+                    child: Text(
+                      style: Theme.of(context).textTheme.button,
+                      "Job wählen",
+                    ))
+              ],
+            );
           } else {
             //if the user has already choosen his job, draw the actions he can execute, his current ressources, etc...
 
@@ -84,7 +85,7 @@ class _HomeViewState extends State<HomeView> {
               return Things.fromSnapshot(e.snapshot);
             });
 
-            return FutureBuilder(
+            body = FutureBuilder(
               builder: (context, things) {
                 var menu = List.of([
                   NotificationCard(
@@ -114,14 +115,21 @@ class _HomeViewState extends State<HomeView> {
                 menu.addAll(buildActionsMenu(
                     job, things.data ?? Things.empty(), currentUser));
 
-                return Scaffold(
-                  floatingActionButton: const ReturnFloatingActionButton(),
-                  body: ListView(children: menu),
-                );
+                // return Scaffold(
+                //   floatingActionButton: const ReturnFloatingActionButton(),
+                //   body: ListView(children: menu),
+                // );
+
+                return ListView(children: menu);
               },
               future: thingsLoader,
             );
           }
+
+          return Scaffold(
+            body: body,
+            floatingActionButton: const ReturnFloatingActionButton(),
+          );
         }
 
         return const LoadingPage();
@@ -181,10 +189,23 @@ class _HomeViewState extends State<HomeView> {
   List<Widget> buildActionsMenu(
       jobs.Job job, Things things, UserData currentUser) {
     return job.getActions().map((a) {
-      DateTime lastActivation = DateTime.parse(currentUser.lastActivation);
-      bool isActivateable = a.isActivateable(things) &&
-          !isSchedulingJob &&
-          lastActivation.difference(DateTime.now()).inDays.abs() >= 1;
+      DateTime lastActivation = currentUser.lastActivation == ""
+          ? DateTime(0)
+          : DateTime.parse(currentUser.lastActivation);
+      DateTime now = DateTime.now();
+
+      //cut hours and minutes from the last activation date and now to get the difference only for days:
+      lastActivation = DateTime(
+          lastActivation.year, lastActivation.month, lastActivation.day);
+
+      now = DateTime(now.year, now.month, now.day);
+
+      //difference comparison
+
+      int diff = lastActivation.difference(now).inDays.abs();
+
+      bool isActivateable =
+          a.isActivateable(things) && !isSchedulingJob && diff >= 1;
 
       print(
           "Last activation ${lastActivation.difference(DateTime.now()).inDays.abs()} ago.");
@@ -218,19 +239,15 @@ class _HomeViewState extends State<HomeView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(a.actionName,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4 //GoogleFonts.oswald(color: Colors.red[400], fontSize: 35),
-                  ),
-              lastActivation.difference(DateTime.now()).inDays.abs() >= 1
+              Text(a.actionName, style: Theme.of(context).textTheme.headline4),
+              diff >= 1 && !isSchedulingJob
                   ? TextButton(
                       onPressed: isActivateable
                           ? () {
+                              a.activate();
                               setState(() {
                                 isSchedulingJob = true;
                               });
-                              a.activate();
                             }
                           : null,
                       style: Theme.of(context).textButtonTheme.style,
@@ -239,8 +256,8 @@ class _HomeViewState extends State<HomeView> {
                               ? null
                               : Theme.of(context).textTheme.button?.apply(
                                   color: Theme.of(context).disabledColor)))
-                  : const CircularProgressIndicator(
-                      color: Colors.grey,
+                  : CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
                     )
             ],
           ),

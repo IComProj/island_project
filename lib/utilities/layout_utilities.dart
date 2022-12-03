@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:island_project/data/color_palette.dart';
 import 'package:island_project/data/notification.dart' as notifications;
 import 'package:island_project/data/thing.dart';
 import 'package:unicons/unicons.dart';
@@ -313,33 +312,3 @@ class ResourceCard extends StatelessWidget {
             )));
   }
 }
-
-// Icon getIconForResource(String resourceName) {
-//   switch (resourceName) {
-//     case ResourceName.gold:
-//       return const Icon(
-//         UniconsLine.dollar_alt,
-//         color: Colors.amber,
-//       );
-//     case ResourceName.apple:
-//       return const Icon(
-//         Icons.apple,
-//         color: Colors.red,
-//       );
-//     case ResourceName.shovel:
-//       return const Icon(
-//         UniconsLine.shovel,
-//         color: Colors.blueGrey,
-//       );
-//     case ResourceName.wheat:
-//       return const Icon(
-//         UniconsLine.trees,
-//         color: Colors.yellow,
-//       );
-//     case ResourceName.meat:
-//       return Icon(Ionicons.fast_food, color: Colors.amber[700]);
-
-//     default:
-//       return const Icon(UniconsLine.gold);
-//   }
-// }

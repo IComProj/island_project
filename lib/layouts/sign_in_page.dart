@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:island_project/data/color_palette.dart';
 import 'package:island_project/data/preference_constants.dart';
 import 'package:island_project/data/userdata.dart';
 import 'package:island_project/utilities/firebase_utilities.dart';
