@@ -59,9 +59,11 @@ class _VillageViewState extends State<VillageView> {
   Widget build(BuildContext context) {
     List<Widget> gridItems =
         List.generate(_users.length, growable: true, (index) {
-      var icon = buildGridItem(() {
-        NavigationUtility.changeToVillagerView(_users[index], context);
-      }, Icons.accessibility_new,
+      var icon = GridImageItem(
+          onPressed: () {
+            NavigationUtility.changeToVillagerView(_users[index], context);
+          },
+          iconData: Icons.accessibility_new,
           //color: ColorPalette.onSecondary,
           text: _users[index].name);
       return icon;
@@ -72,11 +74,13 @@ class _VillageViewState extends State<VillageView> {
     List<Widget> obsticles = List.generate(gridItems.length * 2, (index) {
       switch (r.nextInt(2)) {
         case 0:
-          return buildGridItem(null, UniconsLine.mountains,
-              color: const Color.fromARGB(255, 78, 78, 78));
+          return const GridImageItem(
+              onPressed: null,
+              iconData: UniconsLine.mountains,
+              color: Color.fromARGB(255, 78, 78, 78));
 
         default:
-          return buildGridItem(null, null);
+          return const GridImageItem();
       }
     });
 
@@ -88,24 +92,28 @@ class _VillageViewState extends State<VillageView> {
 
     gridItems.insert(
         0,
-        buildGridItem(() {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text("Info"),
-                content: const Text(
-                    "Das is euer Dorf. Hier kannst du handlen, usw... \nProbiere es einfach mal aus! Clicke auf verschiedene Icons, um zu sehen, was passiert."),
-                actions: [
-                  TextButton(
-                    child: const Text("Ok"),
-                    onPressed: () => Navigator.of(context).pop(),
-                  )
-                ],
+        GridImageItem(
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("Info"),
+                    content: const Text(
+                        "Das is euer Dorf. Hier kannst du handlen, usw... \nProbiere es einfach mal aus! Clicke auf verschiedene Icons, um zu sehen, was passiert."),
+                    actions: [
+                      TextButton(
+                        child: const Text("Ok"),
+                        onPressed: () => Navigator.of(context).pop(),
+                      )
+                    ],
+                  );
+                },
               );
             },
-          );
-        }, UniconsLine.question_circle, color: Colors.red, text: "Info"));
+            iconData: UniconsLine.question_circle,
+            color: Colors.red,
+            text: "Info"));
 
     Widget gridView = Stack(
       children: [GridView.count(crossAxisCount: 4, children: gridItems)],

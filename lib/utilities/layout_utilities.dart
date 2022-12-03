@@ -110,62 +110,39 @@ BottomAppBar buildBottomAppBar({List<Widget>? icons}) {
   );
 }
 
-Widget buildUserCard(String username, Function(String username) onClick) {
-  return GestureDetector(
-      //behavior: HitTestBehavior.deferToChild,
-      onTap: () {
-        onClick(username);
-      },
-      child: Card(
-          elevation: 10,
-          shadowColor: Colors.black,
-          margin: const EdgeInsets.all(6),
-          //color: ColorPalette.background,
-          child: Center(
-            child: Container(
-              margin: const EdgeInsets.all(8),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.account_circle,
-                      size: 45, //color: ColorPalette.primary
-                    ),
-                    Column(children: [
-                      Text(
-                        username,
-                        //style: StyleCollection.defaultTextStyle,
-                      )
-                    ])
-                  ]),
-            ),
-          )));
-}
+class GridImageItem extends StatelessWidget {
+  const GridImageItem(
+      {super.key, this.onPressed, this.iconData, this.color, this.text});
 
-Widget buildGridItem(Function()? onClick, IconData? iconData,
-    {Color? color, String? text}) {
-  return InkWell(
-      onTap: onClick,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            iconData,
-            color: color,
-            size: 60,
-          ),
-          text != null
-              ? Text(
-                  text,
-                  //style: StyleCollection.secondaryTextStyle,
-                )
-              : const SizedBox(
-                  width: 0,
-                  height: 0,
-                )
-        ],
-      ));
+  final Function()? onPressed;
+  final IconData? iconData;
+  final Color? color;
+  final String? text;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+        onTap: onPressed,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              iconData,
+              color: color,
+              size: 60,
+            ),
+            text != null
+                ? Text(
+                    text ?? "",
+                    //style: StyleCollection.secondaryTextStyle,
+                  )
+                : const SizedBox(
+                    width: 0,
+                    height: 0,
+                  )
+          ],
+        ));
+  }
 }
 
 class NotificationCard extends StatelessWidget {
@@ -282,30 +259,6 @@ class BottomAppBarButton extends StatelessWidget {
                   ],
                 ))));
   }
-}
-
-Widget buildIconButton(IconData iconData, Function() onPressed,
-    {String text = ""}) {
-  return Expanded(
-      child: InkWell(
-          customBorder:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
-          onTap: onPressed,
-          child: SizedBox(
-              height: 70,
-              width: 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Icon(
-                    iconData,
-                    size: 35,
-                  ),
-                  Text(
-                    text,
-                  )
-                ],
-              ))));
 }
 
 class ResourceCard extends StatelessWidget {
