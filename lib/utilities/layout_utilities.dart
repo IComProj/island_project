@@ -248,6 +248,42 @@ class ReturnFloatingActionButton extends StatelessWidget {
   }
 }
 
+class BottomAppBarButton extends StatelessWidget {
+  const BottomAppBarButton(
+      {super.key,
+      required this.onPressed,
+      required this.iconData,
+      this.text = ""});
+
+  final Function() onPressed;
+  final IconData iconData;
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+        child: InkWell(
+            customBorder:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+            onTap: onPressed,
+            child: SizedBox(
+                height: 70,
+                width: 100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      iconData,
+                      size: 35,
+                    ),
+                    Text(
+                      text,
+                    )
+                  ],
+                ))));
+  }
+}
+
 Widget buildIconButton(IconData iconData, Function() onPressed,
     {String text = ""}) {
   return Expanded(
