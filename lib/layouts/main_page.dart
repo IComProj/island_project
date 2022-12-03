@@ -97,6 +97,23 @@ class _MainDashboardPageState extends State<MainDashboardPage> {
         body: buildNotificationBoard());
   }
 
+  BottomAppBar buildBottomAppBar({List<Widget>? icons}) {
+    icons ??= [
+      const SizedBox(
+        height: 35,
+      ),
+    ];
+
+    return BottomAppBar(
+      clipBehavior: Clip.antiAlias,
+      shape: const CircularNotchedRectangle(),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: icons),
+    );
+  }
+
   Widget buildNotificationBoard() {
     if (FirebaseAuth.instance.currentUser == null) {
       return const Text("Not signed In!");

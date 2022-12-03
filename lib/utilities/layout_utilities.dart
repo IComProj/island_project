@@ -93,211 +93,194 @@ import 'package:unicons/unicons.dart';
 //   );
 // }
 
-BottomAppBar buildBottomAppBar({List<Widget>? icons}) {
-  icons ??= [
-    const SizedBox(
-      height: 35,
-    ),
-  ];
+// class GridImageItem extends StatelessWidget {
+//   const GridImageItem(
+//       {super.key, this.onPressed, this.iconData, this.color, this.text});
 
-  return BottomAppBar(
-    clipBehavior: Clip.antiAlias,
-    shape: const CircularNotchedRectangle(),
-    child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: icons),
-  );
-}
+//   final Function()? onPressed;
+//   final IconData? iconData;
+//   final Color? color;
+//   final String? text;
 
-class GridImageItem extends StatelessWidget {
-  const GridImageItem(
-      {super.key, this.onPressed, this.iconData, this.color, this.text});
+//   @override
+//   Widget build(BuildContext context) {
+//     return InkWell(
+//         onTap: onPressed,
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: [
+//             Icon(
+//               iconData,
+//               color: color,
+//               size: 60,
+//             ),
+//             text != null
+//                 ? Text(
+//                     text ?? "",
+//                     //style: StyleCollection.secondaryTextStyle,
+//                   )
+//                 : const SizedBox(
+//                     width: 0,
+//                     height: 0,
+//                   )
+//           ],
+//         ));
+//   }
+// }
 
-  final Function()? onPressed;
-  final IconData? iconData;
-  final Color? color;
-  final String? text;
+// class NotificationCard extends StatelessWidget {
+//   const NotificationCard(
+//       {Key? key, required this.notification, this.align = TextAlign.start})
+//       : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-        onTap: onPressed,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              iconData,
-              color: color,
-              size: 60,
-            ),
-            text != null
-                ? Text(
-                    text ?? "",
-                    //style: StyleCollection.secondaryTextStyle,
-                  )
-                : const SizedBox(
-                    width: 0,
-                    height: 0,
-                  )
-          ],
-        ));
-  }
-}
+//   final notifications.Notification notification;
+//   final TextAlign align;
 
-class NotificationCard extends StatelessWidget {
-  const NotificationCard(
-      {Key? key, required this.notification, this.align = TextAlign.start})
-      : super(key: key);
+//   @override
+//   Widget build(BuildContext context) {
+//     final List<TextSpan> markedText = List.empty(growable: true);
+//     var splitted = notification.message.split("|");
 
-  final notifications.Notification notification;
-  final TextAlign align;
+//     bool markText = false;
 
-  @override
-  Widget build(BuildContext context) {
-    final List<TextSpan> markedText = List.empty(growable: true);
-    var splitted = notification.message.split("|");
+//     for (var element in splitted) {
+//       markedText.add(TextSpan(
+//           text: element.replaceAll("[ENTER]", "\n"),
+//           style: markText
+//               ? Theme.of(context)
+//                   .textTheme
+//                   .headline6
+//                   ?.apply(color: Colors.amber)
+//               : null));
 
-    bool markText = false;
+//       markText = !markText;
+//     }
 
-    for (var element in splitted) {
-      markedText.add(TextSpan(
-          text: element.replaceAll("[ENTER]", "\n"),
-          style: markText
-              ? Theme.of(context)
-                  .textTheme
-                  .headline6
-                  ?.apply(color: Colors.amber)
-              : null));
+//     return Card(
+//         child: Padding(
+//             padding: const EdgeInsets.all(8),
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               children: [
+//                 notification.iconID == 0 || notification.message == ""
+//                     ? const SizedBox(
+//                         height: 0,
+//                         width: 0,
+//                       )
+//                     : Row(children: [
+//                         Icon(
+//                           IconData(notification.iconID,
+//                               fontFamily: "MaterialIcons"),
+//                           size: 30,
+//                         ),
+//                         const Spacer(),
+//                         Text(
+//                           notification.modificationDate,
+//                         )
+//                       ]),
+//                 RichText(
+//                   textAlign: align,
+//                   text: TextSpan(
+//                       style: Theme.of(context).textTheme.bodyLarge,
+//                       children: markedText),
+//                 ),
+//               ],
+//             )));
+//   }
+// }
 
-      markText = !markText;
-    }
+// class ReturnFloatingActionButton extends StatelessWidget {
+//   const ReturnFloatingActionButton({super.key});
 
-    return Card(
-        child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                notification.iconID == 0 || notification.message == ""
-                    ? const SizedBox(
-                        height: 0,
-                        width: 0,
-                      )
-                    : Row(children: [
-                        Icon(
-                          IconData(notification.iconID,
-                              fontFamily: "MaterialIcons"),
-                          size: 30,
-                        ),
-                        const Spacer(),
-                        Text(
-                          notification.modificationDate,
-                        )
-                      ]),
-                RichText(
-                  textAlign: align,
-                  text: TextSpan(
-                      style: Theme.of(context).textTheme.bodyLarge,
-                      children: markedText),
-                ),
-              ],
-            )));
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return FloatingActionButton(
+//       mini: true,
+//       shape: const RoundedRectangleBorder(
+//         borderRadius: BorderRadius.all(Radius.circular(16)),
+//       ),
+//       onPressed: () => Navigator.of(context).pop(),
+//       child: const Icon(
+//         Icons.arrow_left,
+//         size: 30,
+//       ),
+//     );
+//   }
+// }
 
-class ReturnFloatingActionButton extends StatelessWidget {
-  const ReturnFloatingActionButton({super.key});
+// class BottomAppBarButton extends StatelessWidget {
+//   const BottomAppBarButton(
+//       {super.key,
+//       required this.onPressed,
+//       required this.iconData,
+//       this.text = ""});
 
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      mini: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(16)),
-      ),
-      onPressed: () => Navigator.of(context).pop(),
-      child: const Icon(
-        Icons.arrow_left,
-        size: 30,
-      ),
-    );
-  }
-}
+//   final Function() onPressed;
+//   final IconData iconData;
+//   final String text;
 
-class BottomAppBarButton extends StatelessWidget {
-  const BottomAppBarButton(
-      {super.key,
-      required this.onPressed,
-      required this.iconData,
-      this.text = ""});
+//   @override
+//   Widget build(BuildContext context) {
+//     return Expanded(
+//         child: InkWell(
+//             customBorder:
+//                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
+//             onTap: onPressed,
+//             child: SizedBox(
+//                 height: 70,
+//                 width: 100,
+//                 child: Column(
+//                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                   children: [
+//                     Icon(
+//                       iconData,
+//                       size: 35,
+//                     ),
+//                     Text(
+//                       text,
+//                     )
+//                   ],
+//                 ))));
+//   }
+// }
 
-  final Function() onPressed;
-  final IconData iconData;
-  final String text;
+// class ResourceCard extends StatelessWidget {
+//   const ResourceCard({super.key, required this.things});
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-        child: InkWell(
-            customBorder:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(60)),
-            onTap: onPressed,
-            child: SizedBox(
-                height: 70,
-                width: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Icon(
-                      iconData,
-                      size: 35,
-                    ),
-                    Text(
-                      text,
-                    )
-                  ],
-                ))));
-  }
-}
+//   final Things things;
 
-class ResourceCard extends StatelessWidget {
-  const ResourceCard({super.key, required this.things});
+//   @override
+//   Widget build(BuildContext context) {
+//     Widget resourcesList = Column(
+//         children: things.content.entries.map((e) {
+//       return Row(children: [
+//         ResourceName.getIconForResource(e.key),
+//         Text("${e.key}:"),
+//         const Spacer(),
+//         Text("${e.value}")
+//       ]);
+//     }).toList());
 
-  final Things things;
+//     resourcesList = things.content.isEmpty
+//         ? const Text("Der Spieler hat noch keine Resourcen")
+//         : resourcesList;
 
-  @override
-  Widget build(BuildContext context) {
-    Widget resourcesList = Column(
-        children: things.content.entries.map((e) {
-      return Row(children: [
-        ResourceName.getIconForResource(e.key),
-        Text("${e.key}:"),
-        const Spacer(),
-        Text("${e.value}")
-      ]);
-    }).toList());
-
-    resourcesList = things.content.isEmpty
-        ? const Text("Der Spieler hat noch keine Resourcen")
-        : resourcesList;
-
-    return Card(
-        elevation: 10,
-        margin: const EdgeInsets.all(8),
-        //color: ColorPalette.background,
-        child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Center(
-              child: Column(
-                children: [
-                  const Text(
-                    "Resourcen:", //style: StyleCollection.defaultTextStyle
-                  ),
-                  const SizedBox(height: 10),
-                  resourcesList
-                ],
-              ),
-            )));
-  }
-}
+//     return Card(
+//         elevation: 10,
+//         margin: const EdgeInsets.all(8),
+//         //color: ColorPalette.background,
+//         child: Padding(
+//             padding: const EdgeInsets.all(8),
+//             child: Center(
+//               child: Column(
+//                 children: [
+//                   const Text(
+//                     "Resourcen:", //style: StyleCollection.defaultTextStyle
+//                   ),
+//                   const SizedBox(height: 10),
+//                   resourcesList
+//                 ],
+//               ),
+//             )));
+//   }
+// }
