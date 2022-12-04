@@ -71,77 +71,89 @@ class _SignInPageState extends State<SignInPage> {
     });
 
     return Scaffold(
-        body: Center(
-            child: Column(children: [
-      Card(
-        //color: ColorPalette.background,
-        child: Center(
-          heightFactor: 2,
-          child: Text(
-            //style: StyleCollection.defaultTextStyle,
-            "Du musst dich anmelden, um auf das Projekt zuzugreifen.",
-            textAlign: TextAlign.center,
-          ),
+        appBar: AppBar(
+          title: Text("Anmelden"),
         ),
-      ),
-      const SizedBox(
-        height: 10,
-      ),
-      emailField,
-      pwdField,
-      usrNameField,
-      TextButton(
-        onPressed: () {
-          if (_userName == "") {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text(
-                      "Fülle bitte auch das Benutzernamen-Feld aus!"),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text("OK"),
-                    )
-                  ],
+        body: Center(
+            child: ListView(children: [
+          const SizedBox(height: 10),
+          const Card(
+            //color: ColorPalette.background,
+            child: Center(
+              heightFactor: 2,
+              child: Text(
+                //style: StyleCollection.defaultTextStyle,
+                "Du musst dich anmelden, um auf das Projekt zuzugreifen.",
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          emailField,
+          const SizedBox(height: 10),
+          pwdField,
+          const SizedBox(height: 10),
+          usrNameField,
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () {
+              if (_userName == "") {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const Text(
+                          "Fülle bitte auch das Benutzernamen-Feld aus!"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text("OK"),
+                        )
+                      ],
+                    );
+                  },
                 );
-              },
-            );
 
-            return;
-          }
+                return;
+              }
 
-          SharedPreferences.getInstance().then((prefs) async {
-            //await prefs.clear();
+              SharedPreferences.getInstance().then((prefs) async {
+                //await prefs.clear();
 
-            prefs.setString(PreferenceConstants.prefnameEmail, _email);
-            prefs.setString(PreferenceConstants.prefnamePassword, _password);
+                prefs.setString(PreferenceConstants.prefnameEmail, _email);
+                prefs.setString(
+                    PreferenceConstants.prefnamePassword, _password);
 
-            FirebaseUtilities.instance.signIn(_email, _password).then((value) {
-              print(
-                  "Saving user: $_userName , ${FirebaseAuth.instance.currentUser?.uid ?? ""}");
+                FirebaseUtilities.instance
+                    .signIn(_email, _password)
+                    .then((value) {
+                  print(
+                      "Saving user: $_userName , ${FirebaseAuth.instance.currentUser?.uid ?? ""}");
 
-              FirebaseUtilities.instance.getCurrentUserData().then((userData) {
-                if (userData.isEmpty) {
-                  userData.uid = FirebaseAuth.instance.currentUser!.uid;
-                }
+                  FirebaseUtilities.instance
+                      .getCurrentUserData()
+                      .then((userData) {
+                    if (userData.isEmpty) {
+                      userData.uid = FirebaseAuth.instance.currentUser!.uid;
+                    }
 
-                userData.name = _userName;
+                    userData.name = _userName;
 
-                userData.serializeToSharedPrefs();
+                    userData.serializeToSharedPrefs();
 
-                FirebaseUtilities.instance.updateUserData(userData);
+                    FirebaseUtilities.instance.updateUserData(userData);
+                  });
+                });
               });
-            });
-          });
-        },
-        //style: StyleCollection.defaultButtonStyle,
-        child: const Text("Sign in"),
-      )
-    ])));
+            },
+            //style: StyleCollection.defaultButtonStyle,
+            child: const Text("Sign in"),
+          )
+        ])));
   }
 
   @override
