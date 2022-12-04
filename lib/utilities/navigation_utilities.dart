@@ -3,7 +3,7 @@ import 'package:island_project/data/userdata.dart';
 import 'package:island_project/layouts/home_view.dart';
 import 'package:island_project/layouts/sign_in_page.dart';
 import 'package:island_project/layouts/village_view.dart';
-import 'package:island_project/layouts/villager_view.dart';
+import 'package:island_project/layouts/villager_info_view.dart';
 
 enum View { village, law, login, home }
 
@@ -25,8 +25,10 @@ class NavigationUtility {
   }
 
   static void changeToVillagerView(UserData userData, BuildContext context) {
-    Navigator.push(context,
-        constructPageRouteBuilder(VillagerView(userData), const Offset(-1, 0)));
+    Navigator.push(
+        context,
+        constructPageRouteBuilder(
+            VillagerInfoView(userData), const Offset(-1, 0)));
   }
 
   static PageRouteBuilder constructPageRouteBuilder(

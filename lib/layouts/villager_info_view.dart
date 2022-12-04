@@ -7,16 +7,16 @@ import 'package:island_project/data/thing.dart';
 import 'package:island_project/data/userdata.dart';
 import 'package:island_project/layouts/primitive_layouts.dart';
 
-class VillagerView extends StatefulWidget {
+class VillagerInfoView extends StatefulWidget {
   final UserData userData;
 
-  const VillagerView(this.userData, {super.key});
+  const VillagerInfoView(this.userData, {super.key});
 
   @override
-  State<StatefulWidget> createState() => _VillagerViewState();
+  State<StatefulWidget> createState() => _VillagerInfoViewState();
 }
 
-class _VillagerViewState extends State<VillagerView> {
+class _VillagerInfoViewState extends State<VillagerInfoView> {
   Things? ownedThings;
 
   StreamSubscription<DatabaseEvent>? subscription;
