@@ -13,6 +13,9 @@ class LawView extends StatefulWidget {
 class _LawViewState extends State<LawView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(floatingActionButton: const ReturnFloatingActionButton());
+    return Scaffold(
+        floatingActionButton: const ReturnFloatingActionButton(
+      arrowDirection: AxisDirection.down,
+    ));
   }
 }

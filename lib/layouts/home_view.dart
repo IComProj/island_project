@@ -127,7 +127,8 @@ class _HomeViewState extends State<HomeView> {
 
           return Scaffold(
             body: body,
-            floatingActionButton: const ReturnFloatingActionButton(),
+            floatingActionButton: const ReturnFloatingActionButton(
+                arrowDirection: AxisDirection.right),
           );
         }
 

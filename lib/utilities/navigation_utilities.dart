@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:island_project/data/userdata.dart';
 import 'package:island_project/layouts/home_view.dart';
+import 'package:island_project/layouts/law_view.dart';
 import 'package:island_project/layouts/sign_in_page.dart';
 import 'package:island_project/layouts/village_view.dart';
 import 'package:island_project/layouts/villager_info_view.dart';
@@ -15,6 +16,8 @@ class NavigationUtility {
       Navigator.push(currentContext,
           constructPageRouteBuilder(const VillageView(), const Offset(-1, 0)));
     } else if (view == View.law) {
+      Navigator.push(currentContext,
+          constructPageRouteBuilder(const LawView(), const Offset(0, 1)));
     } else if (view == View.home) {
       Navigator.push(currentContext,
           constructPageRouteBuilder(const HomeView(), const Offset(1, 0)));

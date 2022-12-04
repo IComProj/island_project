@@ -143,18 +143,43 @@ class NotificationCard extends StatelessWidget {
 }
 
 class ReturnFloatingActionButton extends StatelessWidget {
-  const ReturnFloatingActionButton({super.key});
+  const ReturnFloatingActionButton(
+      {super.key, this.arrowDirection = AxisDirection.left});
+
+  final AxisDirection arrowDirection;
 
   @override
   Widget build(BuildContext context) {
+    IconData arrow;
+
+    switch (arrowDirection) {
+      case AxisDirection.down:
+        arrow = Icons.arrow_drop_down;
+        break;
+
+      case AxisDirection.up:
+        arrow = Icons.arrow_drop_up;
+        break;
+
+      case AxisDirection.right:
+        arrow = Icons.arrow_right;
+        break;
+
+      case AxisDirection.left:
+        arrow = Icons.arrow_left;
+        break;
+      default:
+        arrow = Icons.arrow_left;
+    }
+
     return FloatingActionButton(
       mini: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       onPressed: () => Navigator.of(context).pop(),
-      child: const Icon(
-        Icons.arrow_left,
+      child: Icon(
+        arrow,
         size: 30,
       ),
     );
