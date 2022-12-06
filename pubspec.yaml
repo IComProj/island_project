@@ -67,8 +67,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  #assets:
-  #   - assets/fonts/Oswald-VariableFont_wght.ttf
+  assets:
+     - assets/images/anarchy_icon.png
+     - assets/images/democracy_icon.png
+     - assets/images/monarchy_icon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

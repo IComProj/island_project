@@ -179,7 +179,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget buildJobDescription(jobs.Job job) {
     return Padding(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(0),
       child: NotificationCard(
           notification: notification.Notification("", job.description, 0),
           align: TextAlign.center),

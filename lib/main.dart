@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: greenPrimary),
           bottomAppBarTheme:
               const BottomAppBarTheme(color: Color.fromARGB(255, 20, 20, 20)),
-          cardTheme: CardTheme(color: Color.fromARGB(255, 21, 26, 20)),
+          cardTheme: const CardTheme(color: Color.fromARGB(255, 21, 26, 20)),
           cardColor: Colors.grey.shade900,
           scaffoldBackgroundColor: Colors.black,
           disabledColor: Colors.grey.shade700,
@@ -47,13 +47,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.dark(
               background: Colors.black,
               primary: greenPrimary,
-              secondary: greenPrimary))
-      // primarySwatch: Colors.green,
-      // primaryColor: Colors.green[600],
-      // colorScheme: _generateColorSceme(),
-      // backgroundColor: Colors.black
-
-      ,
+              secondary: greenPrimary)),
       home: const MainDashboardPage(),
     );
   }
