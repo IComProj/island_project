@@ -187,7 +187,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   List<Widget> buildActionsMenu(Job job, Things things, UserData currentUser) {
-    return job.getActions().map((a) {
+    return job.getActions().actions.map((a) {
       DateTime lastActivation = currentUser.lastActivation == ""
           ? DateTime(0)
           : DateTime.parse(currentUser.lastActivation);
