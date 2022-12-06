@@ -19,6 +19,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Island Project',
       theme: ThemeData.dark().copyWith(
+          dialogTheme: DialogTheme(
+              backgroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(12)),
+                  side: BorderSide(color: greenPrimary))),
           textButtonTheme: TextButtonThemeData(style:
               ButtonStyle(shape: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.disabled)) {
