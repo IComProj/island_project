@@ -6,12 +6,12 @@ import 'package:island_project/utilities/firebase_utilities.dart';
 import 'package:unicons/unicons.dart';
 
 class JobAction {
-  JobAction(this.actionName,
+  const JobAction(this.actionName,
       {this.onActivate, this.iconData, this.requirements});
-  String actionName;
-  Function()? onActivate;
-  IconData? iconData;
-  Map<String, int>? requirements;
+  final String actionName;
+  final Function()? onActivate;
+  final IconData? iconData;
+  final Map<String, int>? requirements;
 
   void activate() {
     if (onActivate != null) {
@@ -45,6 +45,20 @@ abstract class Job {
 
   List<JobAction> getActions() {
     return List.empty(growable: true);
+  }
+}
+
+///Static class for storing job data:
+class Jobs {
+  Jobs._();
+
+  static List<Job> get all => [Hunter()];
+
+  static Job? getJobByName(String jobName) {
+    for (var job in all) {
+      if (job.name == jobName) return job;
+    }
+    return null;
   }
 }
 
@@ -92,13 +106,4 @@ class Hunter extends Craftsmen {
 
     return actions;
   }
-}
-
-List<Job> get all => [Hunter()];
-
-Job? getJobByName(String jobName) {
-  for (var job in all) {
-    if (job.name == jobName) return job;
-  }
-  return null;
 }

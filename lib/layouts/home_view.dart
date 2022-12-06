@@ -8,7 +8,7 @@ import 'package:island_project/data/userdata.dart';
 import 'package:island_project/layouts/primitive_layouts.dart';
 import 'package:island_project/layouts/sign_in_page.dart';
 import 'package:island_project/utilities/firebase_utilities.dart';
-import 'package:island_project/data/jobs/jobs.dart' as jobs;
+import 'package:island_project/data/jobs/jobs.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -49,13 +49,13 @@ class _HomeViewState extends State<HomeView> {
                         0),
                     align: TextAlign.center),
                 buildJobDropdown(),
-                buildJobDescription(jobs.all[_dropdownValue ?? 0]),
+                buildJobDescription(Jobs.all[_dropdownValue ?? 0]),
                 TextButton(
                     style: Theme.of(context).textButtonTheme.style,
                     onPressed: () {
                       var userData = userSnapshot.data!;
 
-                      userData.job = jobs.all[_dropdownValue ?? 0].name;
+                      userData.job = Jobs.all[_dropdownValue ?? 0].name;
 
                       FirebaseUtilities.instance.updateUserData(userData);
 
@@ -70,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
           } else {
             //if the user has already choosen his job, draw the actions he can execute, his current ressources, etc...
 
-            var job = jobs.getJobByName(userSnapshot.data!.job);
+            var job = Jobs.getJobByName(userSnapshot.data!.job);
             UserData currentUser = userSnapshot.data!;
 
             if (job == null) return const ErrorPage();
@@ -149,16 +149,16 @@ class _HomeViewState extends State<HomeView> {
         ),
         DropdownButton<int>(
           value: _dropdownValue,
-          items: List.generate(jobs.all.length, (index) {
+          items: List.generate(Jobs.all.length, (index) {
             return DropdownMenuItem(
                 value: index,
                 child: Row(
                   children: [
                     Icon(
-                      jobs.all[index].iconData,
+                      Jobs.all[index].iconData,
                     ),
                     Text(
-                      "   ${jobs.all[index].name}",
+                      "   ${Jobs.all[index].name}",
                       style: Theme.of(context).textTheme.headline5,
                     )
                   ],
@@ -177,7 +177,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget buildJobDescription(jobs.Job job) {
+  Widget buildJobDescription(Job job) {
     return Padding(
       padding: const EdgeInsets.all(0),
       child: NotificationCard(
@@ -186,8 +186,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  List<Widget> buildActionsMenu(
-      jobs.Job job, Things things, UserData currentUser) {
+  List<Widget> buildActionsMenu(Job job, Things things, UserData currentUser) {
     return job.getActions().map((a) {
       DateTime lastActivation = currentUser.lastActivation == ""
           ? DateTime(0)
