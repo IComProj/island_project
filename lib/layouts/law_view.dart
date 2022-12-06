@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:island_project/data/laws/laws.dart';
 import 'package:island_project/layouts/primitive_layouts.dart';
 
 class LawView extends StatefulWidget {
@@ -8,23 +7,6 @@ class LawView extends StatefulWidget {
 
   @override
   State<LawView> createState() => _LawViewState();
-}
-
-enum PoliticalSystem { democracy, anarchy, moarchy }
-
-extension PoliticalSystemExtentions on PoliticalSystem {
-  Color getColorForSystem() {
-    switch (this) {
-      case PoliticalSystem.anarchy:
-        return Colors.red;
-      case PoliticalSystem.democracy:
-        return Colors.blue;
-      case PoliticalSystem.moarchy:
-        return Colors.amber;
-      default:
-        return Colors.grey;
-    }
-  }
 }
 
 class _LawViewState extends State<LawView> {
@@ -90,18 +72,4 @@ class _LawViewState extends State<LawView> {
           );
         });
   }
-
-  // Color _getColorForSystem(PoliticalSystem system) {
-  //   switch (system) {
-  //     case PoliticalSystem.anarchy:
-  //       return Colors.red;
-  //     case PoliticalSystem.democracy:
-  //       return Colors.blue;
-  //     case PoliticalSystem.moarchy:
-  //       return Colors.amber;
-
-  //     default:
-  //       return Colors.grey;
-  //   }
-  // }
 }

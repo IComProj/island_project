@@ -56,6 +56,7 @@ class FirebaseUtilities {
     return ref.child("users").child(username);
   }
 
+  ///Changes the 'lastActivation' property of a userData to the current datetime.
   Future<void> setLastActivation() async {
     UserData userData = await getCurrentUserData();
 
