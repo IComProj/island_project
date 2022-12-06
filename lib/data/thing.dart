@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:island_project/data/preference_constants.dart';
 import 'package:unicons/unicons.dart';
 
 class Things {
@@ -19,9 +20,11 @@ class Things {
     Things thing = Things.empty();
 
     for (var child in snapshot.children) {
-      if (child.key == "owner") thing.owner = child.value as String;
+      if (child.key == PreferenceConstants.thingsOwnerID) {
+        thing.owner = child.value as String;
+      }
 
-      if (child.key == "content") {
+      if (child.key == PreferenceConstants.thingsContentParent) {
         var keys = child.children.map((e) => e.key ?? "");
         var counts = child.children.map((e) => e.value as int);
 
@@ -34,7 +37,10 @@ class Things {
 
   ///Returns a dictionary of the serialized variables of this object.
   Map<String, Object?> serialize() {
-    var res = {"owner": owner, "content": content};
+    var res = {
+      PreferenceConstants.thingsOwnerID: owner,
+      PreferenceConstants.thingsContentParent: content
+    };
 
     return res;
   }
@@ -43,6 +49,7 @@ class Things {
     return Things("", Map.identity());
   }
 
+  ///Checks if the current things have resources of a specific count or more.
   bool hasResources(String resourceName, int resourceCount) {
     if (!content.containsKey(resourceName)) return false;
 

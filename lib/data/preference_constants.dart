@@ -5,4 +5,6 @@ class PreferenceConstants {
   static const String prefnameUserID = "userID";
   static const String prefnameUserJob = "userJob";
   static const String prefnameUserLastActivation = "userLastAct";
+  static const String thingsOwnerID = "ownerID";
+  static const String thingsContentParent = "content";
 }
