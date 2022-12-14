@@ -1,0 +1,70 @@
+# System architecture
+
+An overview of the systems used in project island. 
+
+## Required components:
+
+-   A job system, each player can choose (or change) his job, in which he can execute tasks (or here called: actions)
+-   An action system, actions can be executed and should have following functionalities:
+    -   connect to firebase (async)
+    -   check for allowances
+    -   etc...
+-   Finally a law system, which can disallow jobs or change whole game mechanics (eg., 'communism laws', which changes resource management completely)
+
+## How to archieve this:
+
+-   Found out that the most important thing to do first is to get the action system right. 
+    If the action system is created well, not much work is required in order to create the other systems
+
+
+# Architecture:
+
+
+Job class (abstract): 
+    constr : does nothing special
+
+    //actions : each job has multiple actions, they're stored here 
+    method jobName : unique for each job, jobName != name that gets displayed (snake case)
+    method displayName : returns the displayed of this job (Why is this a method? - Because of localisation!) 
+    method getActions : returns all actions of this job, each job has multiple actions
+
+Jobs class (static):
+    no constr.
+
+    static jobs : a collection of all jobs availiable
+
+Action class:
+    constr : does nothing special
+    
+    actionName : the unique name of this action (snake case)
+    function displayName : returns the displayed of this action (Why is this a function? - Because of localisation!) 
+    function code : code for action behaviour given by constr
+    function? checkAllowance??? (args UserData, ThingsData) returns bool : checks allowance for action 
+    
+    method activate (args: UserData, ThingsData???) : executes the action
+    method isAllowed(args: UserData, thingsData) : just executes and returns value from checkAllowance function
+
+ActionCollection class (static):
+    stores all actions
+
+LawStack class:
+    //description: stores the current laws (fetches them at app start from firebase) and executes specific actions
+
+
+
+    laws: an array of laws currently active
+    method getTypeOfSystem returns PoliticalSystem : returns the type of political system (normally for UI usage)
+
+
+Law class:
+
+    lawName : the unique name of this law (snake case)
+    function displayName : returns the displayed of this action (Why is this a function? - Because of localisation!) 
+    function? check (args: String) returns bool : checks if given String expression is allowed (could be a job or action or any other name)
+    function? onStart : triggers always on start
+    function? buildCard : build a custom card widget 
+    method serialize returns Array : serializes this Law into a data array that can be stored in firebase 
+
+
+
+
