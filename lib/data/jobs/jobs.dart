@@ -2,49 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:island_project/data/thing.dart';
+import 'package:island_project/data/userdata.dart';
 import 'package:island_project/utilities/firebase_utilities.dart';
 import 'package:unicons/unicons.dart';
 
 part 'actions.dart';
-
-class JobAction {
-  const JobAction(this.actionName,
-      {this.onActivate,
-      this.iconData,
-      this.requirements,
-      this.requirementIndicator});
-  final String actionName;
-  final Function()? onActivate;
-  final IconData? iconData;
-  final Map<String, int>? requirements;
-  final Function<bool>()? requirementIndicator;
-
-  void activate() {
-    if (onActivate != null) {
-      onActivate!();
-    }
-  }
-
-  bool isActivateable(Things things) {
-    if (requirements == null) return true;
-
-    for (var requiredResource in requirements!.entries) {
-      String resourceName = requiredResource.key;
-
-      if (!things.content.containsKey(resourceName)) return false;
-
-      if (things.content[resourceName]! < requiredResource.value) return false;
-    }
-
-    //we are through the loop: means we can de custom validation
-
-    if (requirementIndicator != null) {
-      return requirementIndicator!();
-    }
-
-    return true;
-  }
-}
 
 ///Static class for storing job data:
 class Jobs {
@@ -52,7 +14,7 @@ class Jobs {
 
   static Job? getJobByName(String jobName) {
     for (var job in all) {
-      if (job.name == jobName) return job;
+      if (job.displayName == jobName) return job;
     }
     return null;
   }
@@ -64,7 +26,8 @@ class Jobs {
 ///
 ///
 abstract class Job {
-  String get name;
+  String get jobName;
+  String get displayName;
   IconData? iconData;
   String get description =>
       "Diesen  Text solltest du eigentlich nicht sehen. Bitte teile das deinen Projektleiter mit!";
@@ -77,6 +40,12 @@ abstract class Job {
 ///Provides basic actions everyone can execute like building a house,...
 class Craftsmen extends Job {
   @override
+  String get jobName => "craftsmen";
+
+  @override
+  String get displayName => "Handwerker";
+
+  @override
   JobActionsList getActions() {
     var actions = super.getActions();
 
@@ -84,14 +53,14 @@ class Craftsmen extends Job {
 
     return actions;
   }
-
-  @override
-  String get name => "Handwerker";
 }
 
 class Hunter extends Job {
   @override
-  String get name => "Jäger";
+  String get jobName => "hunter";
+
+  @override
+  String get displayName => "Jäger";
 
   @override
   IconData? get iconData => UniconsLine.crosshair;
