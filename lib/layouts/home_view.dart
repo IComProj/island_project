@@ -55,7 +55,7 @@ class _HomeViewState extends State<HomeView> {
                     onPressed: () {
                       var userData = userSnapshot.data!;
 
-                      userData.job = Jobs.all[_dropdownValue ?? 0].name;
+                      userData.job = Jobs.all[_dropdownValue ?? 0].displayName;
 
                       FirebaseUtilities.instance.updateUserData(userData);
 
@@ -95,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                     Text("Dein zurzeitiger Beruf:  ",
                         style: Theme.of(context).textTheme.headline5),
-                    Text(job.name,
+                    Text(job.displayName,
                         style: Theme.of(context).textTheme.displaySmall)
                   ]),
                   buildJobDescription(job),
@@ -158,7 +158,7 @@ class _HomeViewState extends State<HomeView> {
                       Jobs.all[index].iconData,
                     ),
                     Text(
-                      "   ${Jobs.all[index].name}",
+                      "   ${Jobs.all[index].displayName}",
                       style: Theme.of(context).textTheme.headline5,
                     )
                   ],
@@ -204,7 +204,7 @@ class _HomeViewState extends State<HomeView> {
       int diff = lastActivation.difference(now).inDays.abs();
 
       bool isActivateable =
-          a.isActivateable(things) && !isSchedulingJob && diff >= 1;
+          a.isAllowed(currentUser, things) && !isSchedulingJob && diff >= 1;
 
       print(
           "Last activation ${lastActivation.difference(DateTime.now()).inDays.abs()} ago.");
@@ -243,7 +243,7 @@ class _HomeViewState extends State<HomeView> {
                   ? TextButton(
                       onPressed: isActivateable
                           ? () {
-                              a.activate();
+                              a.activate(currentUser, things);
                               setState(() {
                                 isSchedulingJob = true;
                               });

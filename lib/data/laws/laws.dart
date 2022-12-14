@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
 
-enum PoliticalSystem { democracy, anarchy, moarchy, communism }
+import 'package:flutter/material.dart';
+import 'package:island_project/utilities/rule_utility.dart' as utils;
+
+enum PoliticalSystem { democracy, anarchy, moarchy, communism, none }
 
 extension PoliticalSystemExtentions on PoliticalSystem {
   Color getColorForSystem() {
@@ -19,21 +22,86 @@ extension PoliticalSystemExtentions on PoliticalSystem {
   }
 }
 
-class LawData {
-  List<Paragraph> paragraphs = List.empty();
+class LawStack {
+  List<Law> laws = List.empty(growable: true);
+
+  void addLaw(Law rule) {
+    laws.add(rule);
+  }
 
   ///stub
   PoliticalSystem getTypeOfSystem() {
-    return PoliticalSystem.anarchy;
+    //PoliticalSystem.values.
+
+    var ranking = {
+      for (var element in PoliticalSystem.values)
+        element: 0 //PoliticalSystem.values.indexOf(element);
+    };
+
+    for (var rule in laws) {
+      ranking[rule.system] = ranking[rule.system]! + 1;
+    }
+
+    return ranking.entries
+        .reduce(
+            (value, element) => value.value > element.value ? value : element)
+        .key;
   }
 }
 
-class Paragraph {
-  Paragraph(this.rule);
+//enum RuleOperator { disallow, constant, none }
 
-  String rule;
+///The rule object. With this, you can check for allowances, constants, etc...
+class Law {
+  Law(this.lawName,
+      {this.displayName,
+      required this.check,
+      this.onStart,
+      required this.buildCard,
+      this.system = PoliticalSystem.none});
 
-  Map<String, Object> serialize() {
-    return {};
-  }
+  final String lawName;
+  final String Function()? displayName;
+  final bool Function(String) check;
+  final Function()? onStart;
+  final Widget? Function() buildCard;
+
+  final PoliticalSystem system;
+
+  //void onRegister(RuleStack stack);
+
+  //if this triggers, return true
 }
+
+// class NationalisationRule extends Law {
+//   //@override
+//   //void onRegister(RuleStack stack) {}
+
+//   @override
+//   PoliticalSystem get system => PoliticalSystem.communism;
+
+//   @override
+//   bool check(String expression) {
+//     if (utils.isVar(expression, RuleVariables.nationalizationVar.varName)) {
+//       //trigger!
+//       return true;
+//     }
+
+//     return false;
+//   }
+// }
+
+// class RuleVar {
+//   const RuleVar(this.varName, this.description, this.systemType);
+
+//   final PoliticalSystem systemType;
+//   final String varName;
+//   final String description;
+// }
+
+// class RuleVariables {
+//   static const RuleVar nationalizationVar = RuleVar(
+//       "Verstaatlichung jedes Eigentums",
+//       "Alles, was irgendwie erwirtschaftet wird, erhält der Staat.",
+//       PoliticalSystem.communism);
+// }
