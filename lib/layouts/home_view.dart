@@ -114,11 +114,6 @@ class _HomeViewState extends State<HomeView> {
                 menu.addAll(buildActionsMenu(
                     job, things.data ?? Things.empty(), currentUser));
 
-                // return Scaffold(
-                //   floatingActionButton: const ReturnFloatingActionButton(),
-                //   body: ListView(children: menu),
-                // );
-
                 return ListView(children: menu);
               },
               future: thingsLoader,
@@ -193,43 +188,21 @@ class _HomeViewState extends State<HomeView> {
           : DateTime.parse(currentUser.lastActivation);
       DateTime now = DateTime.now();
 
-      //cut hours and minutes from the last activation date and now to get the difference only for days:
+      //cut hours and minutes from the last activation date and DateTiem.now to get the difference only for days:
       lastActivation = DateTime(
           lastActivation.year, lastActivation.month, lastActivation.day);
 
       now = DateTime(now.year, now.month, now.day);
 
-      //difference comparison
+      //difference comparison:
 
       int diff = lastActivation.difference(now).inDays.abs();
 
       bool isActivateable =
           a.isAllowed(currentUser, things) && !isSchedulingJob && diff >= 1;
 
-      print(
+      debugPrint(
           "Last activation ${lastActivation.difference(DateTime.now()).inDays.abs()} ago.");
-
-      TextStyle? resourceNotAvailiableTextStyle = Theme.of(context)
-          .textTheme
-          .bodySmall; //const TextStyle(color: Colors.red);
-
-      List<Widget> requiredResourcesLabels =
-          a.requirements?.entries.map((entry) {
-                bool hasResource = things.hasResources(entry.key, entry.value);
-
-                return Row(children: [
-                  ResourceName.getIconForResource(entry.key),
-                  Text(
-                    "${entry.key}:",
-                    style: hasResource ? null : resourceNotAvailiableTextStyle,
-                  ),
-                  Text(
-                    "${entry.value}  ",
-                    style: hasResource ? null : resourceNotAvailiableTextStyle,
-                  ),
-                ]);
-              }).toList() ??
-              List.empty();
 
       return Card(
           child: Padding(
@@ -238,7 +211,8 @@ class _HomeViewState extends State<HomeView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(a.actionName, style: Theme.of(context).textTheme.headline4),
+              Text(a.displayName(),
+                  style: Theme.of(context).textTheme.headline4),
               diff >= 1 && !isSchedulingJob
                   ? TextButton(
                       onPressed: isActivateable
@@ -260,9 +234,9 @@ class _HomeViewState extends State<HomeView> {
                     )
             ],
           ),
-          Row(
-            children: requiredResourcesLabels,
-          )
+          a.requirements == null
+              ? const SizedBox()
+              : a.requirements!(currentUser, things),
         ]),
       ));
     }).toList();

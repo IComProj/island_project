@@ -14,6 +14,8 @@ class _LawViewState extends State<LawView> {
   Widget build(BuildContext context) {
     final Map<PoliticalSystem, Image> systemIcons = _getSystemIcons();
 
+    PoliticalSystem currentSystem = LawStack.instance.getTypeOfSystem();
+
     return Scaffold(
         appBar: AppBar(
             title: const Text("Gesetz"), automaticallyImplyLeading: false),
@@ -32,8 +34,7 @@ class _LawViewState extends State<LawView> {
               children: [
                 SizedBox(
                   height: 80,
-                  child:
-                      systemIcons[PoliticalSystem.anarchy] ?? const SizedBox(),
+                  child: systemIcons[currentSystem] ?? const SizedBox(),
                 ),
                 const SizedBox(
                   width: 20,
@@ -41,8 +42,11 @@ class _LawViewState extends State<LawView> {
                 Column(
                   children: [
                     Text(
-                      "Anarchie",
-                      style: Theme.of(context).textTheme.headline4,
+                      currentSystem.getNameForSystem(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          ?.apply(color: currentSystem.getColorForSystem()),
                     ),
                     Text(
                       "(Zurzeitige Staatsform)",
