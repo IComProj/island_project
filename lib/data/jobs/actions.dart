@@ -1,25 +1,30 @@
 part of 'jobs.dart';
 
 class JobAction {
-  const JobAction(this.actionName,
-      {this.displayName,
-      this.onActivate,
-      this.checkAllowance,
-      this.iconData,
-      this.requirements,
-      this.requirementIndicator});
+  const JobAction(
+    this.actionName, {
+    required this.displayName,
+    this.onActivate,
+    this.checkAllowance,
+    this.iconData,
+    this.requirements,
+    //this.requirementIndicator
+  });
   final String actionName;
   final IconData? iconData;
-  final String Function()? displayName;
-  final Function(UserData, Things)? onActivate;
-  final bool Function(UserData, Things)? checkAllowance;
-  final Map<String, int>? requirements;
-  final Function<bool>()? requirementIndicator;
+  final String Function() displayName;
+  final Function(UserData user, Things things)? onActivate;
+  final bool Function(UserData user, Things things)? checkAllowance;
+  final RequirementLabel Function(UserData user, Things things)? requirements;
+  //final Map<String, int>? requirements;
+  // final Function<bool>()? requirementIndicator;
 
-  void activate(UserData user, Things things) {
+  Future? activate(UserData user, Things things) async {
     if (onActivate != null) {
-      onActivate!(user, things);
+      await onActivate!(user, things);
     }
+
+    return null;
   }
 
   bool isAllowed(UserData user, Things things) {
@@ -27,26 +32,6 @@ class JobAction {
 
     return checkAllowance!(user, things);
   }
-
-  // bool isActivateable(Things things) {
-  //   if (requirements == null) return true;
-
-  //   for (var requiredResource in requirements!.entries) {
-  //     String resourceName = requiredResource.key;
-
-  //     if (!things.content.containsKey(resourceName)) return false;
-
-  //     if (things.content[resourceName]! < requiredResource.value) return false;
-  //   }
-
-  //   //we are through the loop: means we can de custom validation
-
-  //   if (requirementIndicator != null) {
-  //     return requirementIndicator!();
-  //   }
-
-  //   return true;
-  // }
 }
 
 ///A list of job actions
@@ -66,23 +51,39 @@ class JobActionsList {
 
 final _buildHouseAction = JobAction(
   "act_build_house",
+  displayName: () => "Haus bauen",
   onActivate: (user, things) {
     FirebaseUtilities.instance.setLastActivation();
   },
-  requirements: {},
   iconData: UniconsLine.shovel,
 );
 
-final _huntAction = JobAction("act_hunt", onActivate: (user, things) {
-  FirebaseUtilities.instance.setLastActivation();
-}, iconData: Ionicons.locate, requirements: {});
+final _huntAction = JobAction("act_hunt",
+    displayName: () => "Jagen",
+    onActivate: (user, things) {
+      FirebaseUtilities.instance.setLastActivation();
+    },
+    iconData: Ionicons.locate);
 
-final _placeTrapAction =
-    JobAction("act_place_trap", onActivate: (user, things) {
-  FirebaseUtilities.instance.setLastActivation();
-}, iconData: Ionicons.locate, requirements: {
-  ResourceName.shovel: 1,
-});
+final _placeTrapAction = JobAction(
+  "act_place_trap",
+  displayName: () => "Falle platzieren",
+  onActivate: (user, things) {
+    FirebaseUtilities.instance.setLastActivation();
+  },
+  iconData: Ionicons.locate,
+  requirements: (user, things) {
+    return RequirementLabel(
+      requirements: [
+        Requirement(ResourceName.shovel, 1,
+            availiable: things.hasResources(ResourceName.shovel, 1))
+      ],
+    );
+  },
+// {
+//   ResourceName.shovel: 1,
+// }
+);
 
 ///A collection of job actions
 class ActionCollection {
