@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:island_project/data/thing.dart';
 import 'package:island_project/data/userdata.dart';
 
@@ -29,7 +30,9 @@ class FirebaseUtilities {
   ///The object is empty when we aren't authenticated or the user doesn't exist in the database yet.
   ///
   Future<UserData> getCurrentUserData() async {
-    print("CurrentUser: ${FirebaseAuth.instance.currentUser}");
+    if (kDebugMode) {
+      print("CurrentUser: ${FirebaseAuth.instance.currentUser}");
+    }
 
     if (FirebaseAuth.instance.currentUser == null) return UserData.empty();
 
@@ -39,7 +42,9 @@ class FirebaseUtilities {
 
     return ref.once().then((event) {
       if (!event.snapshot.exists) {
-        print("Snapshot does not exist");
+        if (kDebugMode) {
+          print("Snapshot does not exist");
+        }
         return UserData.empty();
       }
       return UserData.fromSnapshot(event.snapshot);
@@ -50,13 +55,15 @@ class FirebaseUtilities {
   ///
   ///FirebaseDatabase.instance.ref().child("users").child(username);
   ///
-  DatabaseReference referenceByUsername(String username) {
-    var ref = FirebaseDatabase.instance.ref();
+  // DatabaseReference referenceByUsername(String username) {
+  //   var ref = FirebaseDatabase.instance.ref();
 
-    return ref.child("users").child(username);
-  }
+  //   return ref.child("users").child(username);
+  // }
 
   ///Changes the 'lastActivation' property of a userData to the current datetime.
+  ///
+  ///Calls [updateUserData] internally.
   Future<void> setLastActivation() async {
     UserData userData = await getCurrentUserData();
 
@@ -69,7 +76,9 @@ class FirebaseUtilities {
   ///
   void updateUserData(UserData userData) {
     if (userData.isEmpty) {
-      print("Error: Userdata is empty!");
+      if (kDebugMode) {
+        print("Error: Userdata is empty!");
+      }
       return;
     }
 
@@ -84,7 +93,9 @@ class FirebaseUtilities {
 
   void updateThings(Things things) {
     if (things.isEmpty) {
-      print("Things are empty!");
+      if (kDebugMode) {
+        print("Things are empty!");
+      }
       return;
     }
 
