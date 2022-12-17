@@ -262,3 +262,47 @@ class ResourceCard extends StatelessWidget {
             )));
   }
 }
+
+class Requirement {
+  Requirement(this.name, this.count,
+      {this.availiable = true, this.showIcon = true});
+
+  bool availiable;
+  bool showIcon;
+  String name;
+  int? count;
+}
+
+class RequirementLabel extends StatelessWidget {
+  const RequirementLabel({this.requirements, super.key});
+
+  final List<Requirement>? requirements;
+
+  @override
+  Widget build(BuildContext context) {
+    TextStyle? resourceNotAvailiableTextStyle =
+        Theme.of(context).textTheme.bodySmall;
+
+    if (requirements == null) return const SizedBox();
+
+    return Row(
+        children: requirements!.map((r) {
+      if (r.count == null) {
+        return Text(r.name,
+            style: r.availiable ? null : resourceNotAvailiableTextStyle);
+      }
+
+      return Row(children: [
+        r.showIcon ? ResourceName.getIconForResource(r.name) : const SizedBox(),
+        Text(
+          "${r.name}:",
+          style: r.availiable ? null : resourceNotAvailiableTextStyle,
+        ),
+        Text(
+          "${r.count}  ",
+          style: r.availiable ? null : resourceNotAvailiableTextStyle,
+        ),
+      ]);
+    }).toList());
+  }
+}
