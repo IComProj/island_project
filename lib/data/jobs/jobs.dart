@@ -22,13 +22,18 @@ class Jobs {
     return null;
   }
 
-  static List<Job> get all => [Hunter()];
+  static List<Job> get all => [Hunter(), Explorer()];
 }
 
 ///Inherit this class to create your own Job.
 ///
 ///
 abstract class Job {
+  ///Should begin with: "job_"
+  ///
+  ///So name jobs like this:
+  ///
+  ///"job_${your job name HERE}"
   String get jobName;
   String get displayName;
   IconData? iconData;
@@ -43,7 +48,7 @@ abstract class Job {
 ///Provides basic actions everyone can execute like building a house,...
 class Craftsmen extends Job {
   @override
-  String get jobName => "craftsmen";
+  String get jobName => "job_craftsmen";
 
   @override
   String get displayName => "Handwerker";
@@ -60,7 +65,7 @@ class Craftsmen extends Job {
 
 class Hunter extends Job {
   @override
-  String get jobName => "hunter";
+  String get jobName => "job_hunter";
 
   @override
   String get displayName => "Jäger";
@@ -70,7 +75,7 @@ class Hunter extends Job {
 
   @override
   String get description =>
-      "Als Jäger kümmerst du dich um die Versorgung. Du weißt: Nur Fleisch macht Fleisch!";
+      "Als Jäger/in kümmerst du dich um die Versorgung. Du weißt: Nur Fleisch macht Fleisch!";
 
   @override
   JobActionsList getActions() {
@@ -78,6 +83,30 @@ class Hunter extends Job {
 
     actions.addAction(ActionCollection.instance.huntAction);
     actions.addAction(ActionCollection.instance.placeTrapAction);
+
+    return actions;
+  }
+}
+
+class Explorer extends Job {
+  @override
+  String get displayName => "Späher";
+
+  @override
+  String get jobName => "job_explorer";
+
+  @override
+  IconData? get iconData => Icons.explore_outlined;
+
+  @override
+  String get description =>
+      "Als Späher/in erkundest du das Land. Du hast die Chance, Reichtümer, Gold und andere Wertgegenstände, aber auch Gefahren zu finden.";
+
+  @override
+  JobActionsList getActions() {
+    var actions = super.getActions();
+
+    //TODO: Implement actions...
 
     return actions;
   }

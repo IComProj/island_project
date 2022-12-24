@@ -10,6 +10,8 @@ class JobAction {
     this.requirements,
     //this.requirementIndicator
   });
+
+  ///Action name should begin with "act_${...}"
   final String actionName;
   final IconData? iconData;
   final String Function() displayName;
