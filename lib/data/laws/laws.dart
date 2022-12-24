@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:island_project/utilities/firebase_utilities.dart';
 import 'package:island_project/utilities/law_utility.dart' as utils;
 
 enum PoliticalSystem { democracy, anarchy, monarchy, communism, none }
@@ -38,8 +39,17 @@ extension PoliticalSystemExtentions on PoliticalSystem {
 }
 
 class LawStack {
-  //TODO: Deserialisation
-  static LawStack instance = LawStack([]);
+  static late LawStack instance;
+
+  static Future pull() async {
+    var laws = await FirebaseUtilities.instance.getLaws();
+
+    instance = LawStack(laws);
+  }
+
+  static void push() {
+    FirebaseUtilities.instance.updateLaws(instance.laws);
+  }
 
   LawStack(this.laws);
 
@@ -80,7 +90,8 @@ class Law {
       required this.check,
       this.onStart,
       required this.buildCard,
-      this.system = PoliticalSystem.none});
+      this.system = PoliticalSystem.none,
+      this.data});
 
   final String lawName;
   final String Function()? displayName;
@@ -88,9 +99,12 @@ class Law {
   ///Should return true if there's a trigger
   final bool Function(String expr) check;
   final Function()? onStart;
-  final Widget? Function() buildCard;
+  final Widget? Function(BuildContext context, int paragraph) buildCard;
+  Map<String, String>? data;
 
   final PoliticalSystem system;
+
+  void setData(Map<String, String> newData) => data = newData;
 
   //void onRegister(RuleStack stack);
 
@@ -110,14 +124,25 @@ final _nationalisationLaw = Law("law_nationalisation",
     check: (expr) {
       return false;
     },
-    buildCard: () {
-      return const Text("Verstaatlichung");
+    buildCard: (context, paragraph) {
+      return Card(
+        child: Column(
+          children: [
+            Text(
+              "§$paragraph : Verstaatlichung aller Eigentümer",
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            Text("ALLES wird verstaatlicht.")
+          ],
+        ),
+      );
     },
     system: PoliticalSystem.communism);
 
 // class NationalisationRule extends Law {
 //   //@override
 //   //void onRegister(RuleStack stack) {}
+
 
 //   @override
 //   PoliticalSystem get system => PoliticalSystem.communism;

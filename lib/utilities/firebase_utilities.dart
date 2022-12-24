@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/foundation.dart';
+import 'package:island_project/data/laws/laws.dart';
 import 'package:island_project/data/thing.dart';
 import 'package:island_project/data/userdata.dart';
 
@@ -106,5 +107,49 @@ class FirebaseUtilities {
         .child(things.owner)
         .update(things.serialize())
         .onError((error, stackTrace) => print(error));
+  }
+
+  Future<List<Law>> getLaws() async {
+    DatabaseReference ref = FirebaseDatabase.instance.ref();
+
+    ref = ref.child("laws");
+
+    var event = await ref.once();
+
+    return List.generate(event.snapshot.children.length, (index) {
+      var lawSnapshot = event.snapshot.children.elementAt(index);
+
+      // for (var lawSnapshot in event.snapshot.children) {
+      var lawName = lawSnapshot.child("lawName").value as String;
+
+      Law lawInstance =
+          Laws.laws.where((element) => element.lawName == lawName).first;
+
+      var data = {
+        for (var data in lawSnapshot.child("data").children)
+          data.key as String: data.value as String
+      };
+
+      lawInstance.setData(data);
+      //}
+
+      return lawInstance;
+    });
+  }
+
+  void updateLaws(List<Law> laws) {
+    var ref = FirebaseDatabase.instance.ref("laws");
+
+    Map m = {};
+
+    for (var i = 0; i < laws.length; i++) {
+      var lawName = laws[i].lawName;
+
+      var data = {for (var data in laws[i].data!.entries) data.key: data.value};
+
+      m[i] = {"data": data, "lawName": lawName};
+    }
+
+    ref.set(m);
   }
 }
