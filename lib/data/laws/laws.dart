@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:island_project/data/jobs/jobs.dart';
+import 'package:island_project/data/laws/law_cards.dart';
+import 'package:island_project/layouts/primitive_layouts.dart';
 import 'package:island_project/utilities/firebase_utilities.dart';
 import 'package:island_project/utilities/law_utility.dart' as utils;
 
@@ -55,9 +58,9 @@ class LawStack {
 
   List<Law> laws = List.empty(growable: true);
 
-  void addLaw(Law rule) {
-    laws.add(rule);
-  }
+  // void addLaw(Law rule) {
+  //   laws.add(rule);
+  // }
 
   ///stub
   PoliticalSystem getTypeOfSystem() {
@@ -74,10 +77,20 @@ class LawStack {
       ranking[rule.system] = ranking[rule.system]! + 1;
     }
 
+    ranking.remove(PoliticalSystem.none);
+
     return ranking.entries
         .reduce(
             (value, element) => value.value > element.value ? value : element)
         .key;
+  }
+
+  bool test(String expression) {
+    for (var i = 0; i < laws.length; i++) {
+      if (laws[i].check(expression, i)) return true;
+    }
+
+    return false;
   }
 }
 
@@ -97,9 +110,10 @@ class Law {
   final String Function()? displayName;
 
   ///Should return true if there's a trigger
-  final bool Function(String expr) check;
+  final bool Function(String expr, int lawstackIndex) check;
   final Function()? onStart;
-  final Widget? Function(BuildContext context, int paragraph) buildCard;
+  final Widget? Function(
+      BuildContext context, int lawstackIndex, Function()? onDelete) buildCard;
   Map<String, String>? data;
 
   final PoliticalSystem system;
@@ -115,29 +129,41 @@ class Laws {
   Laws._();
 
   static Law get nationalisationLaw => _nationalisationLaw;
+  static Law get disallowJobLaw => _disallowJobLaw;
 
-  static final List<Law> laws = [_nationalisationLaw];
+  static final List<Law> laws = [_nationalisationLaw, _disallowJobLaw];
 }
 
 final _nationalisationLaw = Law("law_nationalisation",
     displayName: () => "Verstaatlichung",
-    check: (expr) {
+    check: (expr, index) {
       return false;
     },
-    buildCard: (context, paragraph) {
-      return Card(
-        child: Column(
-          children: [
-            Text(
-              "§$paragraph : Verstaatlichung aller Eigentümer",
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            Text("ALLES wird verstaatlicht.")
-          ],
-        ),
+    buildCard: (context, lawstackIndex, onDelete) {
+      return LawCard(
+        onDelete: onDelete,
+        system: PoliticalSystem.communism,
+        title: "Verstaatlichung aller Eigentümer",
+        children: const [Text("ALLES wird verstaatlicht.")],
       );
     },
     system: PoliticalSystem.communism);
+
+final _disallowJobLaw = Law(
+  "law_disallow_job",
+  displayName: () => "Verbot von Beruf",
+  check: (expr, index) {
+    if (LawStack.instance.laws[index].data!["job"] == expr) return true;
+
+    return false;
+  },
+  buildCard: (context, lawstackIndex, onDelete) {
+    return DisallowJobCard(
+      onDelete: onDelete,
+      lawstackIndex: lawstackIndex,
+    );
+  },
+);
 
 // class NationalisationRule extends Law {
 //   //@override

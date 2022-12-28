@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:island_project/data/laws/laws.dart';
 import 'package:island_project/data/thing.dart';
 import 'package:island_project/data/notification.dart' as notifications;
 import 'package:island_project/utilities/navigation_utilities.dart';
@@ -33,13 +36,27 @@ class ErrorPage extends StatelessWidget {
 class LoadingPage extends StatelessWidget {
   const LoadingPage({super.key});
 
+  static const List<String> loadingSlogans = [
+    "Festplatte wird zerlegt...",
+    "Trojaner werden heruntergeladen...",
+  ];
+
   @override
   Widget build(BuildContext context) {
-    var loadingPage = const Scaffold(
+    var r = Random();
+
+    String randomSlogan = loadingSlogans[r.nextInt(loadingSlogans.length)];
+
+    var loadingPage = Scaffold(
         body: Center(
-            child: CircularProgressIndicator(
-      backgroundColor: Colors.transparent,
-      color: Colors.green,
+            child: Column(
+      children: [
+        CircularProgressIndicator(
+            // backgroundColor: Colors.transparent,
+            // color: Colors.green,
+            ),
+        Text(randomSlogan)
+      ],
     )));
 
     return loadingPage;
@@ -304,5 +321,49 @@ class RequirementLabel extends StatelessWidget {
         ),
       ]);
     }).toList());
+  }
+}
+
+class LawCard extends StatelessWidget {
+  final String title;
+  final List<Widget> children;
+  final PoliticalSystem system;
+  final Function()? onDelete;
+
+  const LawCard(
+      {required this.title,
+      required this.children,
+      this.system = PoliticalSystem.none,
+      this.onDelete,
+      super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(4)),
+        ),
+        shadowColor: system.getColorForSystem(),
+        child: Column(
+          children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            Row(
+              children: [
+                const Spacer(),
+                Column(children: children),
+                const Spacer(),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                      onPressed: () => onDelete?.call(),
+                      icon: const Icon(Icons.delete_outline)),
+                )
+              ],
+            )
+          ],
+        ));
   }
 }
