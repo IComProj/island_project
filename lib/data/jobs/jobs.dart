@@ -17,7 +17,7 @@ class Jobs {
 
   static Job? getJobByName(String jobName) {
     for (var job in all) {
-      if (job.displayName == jobName) return job;
+      if (job.jobName == jobName) return job;
     }
     return null;
   }
